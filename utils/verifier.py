@@ -25,6 +25,7 @@ Using only the evidence provided below, evaluate whether the claim is supported.
 Respond in exactly this format:
 Verdict: <Supported | Weakly Supported | Unsupported>
 Explanation: <one sentence explaining why>
+Correct: <one sentence stating what the evidence actually says about this topic — even if the claim is correct, restate the fact from the evidence>
 
 Evidence:
 {evidence_text}
@@ -39,20 +40,23 @@ Claim: {claim}"""
 
     raw = response.choices[0].message.content.strip()
 
-    # Parse the verdict and explanation from the response
     verdict = "Unsupported"
     explanation = raw
+    correct = ""
 
     for line in raw.splitlines():
         if line.startswith("Verdict:"):
             verdict = line.replace("Verdict:", "").strip()
         elif line.startswith("Explanation:"):
             explanation = line.replace("Explanation:", "").strip()
+        elif line.startswith("Correct:"):
+            correct = line.replace("Correct:", "").strip()
 
     return {
         "claim": claim,
         "verdict": verdict,
         "explanation": explanation,
+        "correct": correct,
         "evidence": [c["text"] for c in evidence_chunks]
     }
 
