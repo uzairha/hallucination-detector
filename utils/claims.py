@@ -16,7 +16,8 @@ def extract_claims(answer: str) -> List[str]:
     prompt = f"""You are a fact-checking assistant.
 
 Your job is to extract every factual claim from the text below.
-- Write each claim as a single, standalone sentence
+- Extract the claims EXACTLY as they are asserted in the text — do not rephrase, soften, or correct them
+- Include false or controversial claims verbatim — they need to be verified, not fixed
 - Only include checkable facts (not opinions or vague statements)
 - Return one claim per line, with no bullet points or numbering
 
