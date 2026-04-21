@@ -1,0 +1,13 @@
+A process is an instance of a running program. It has its own memory space, file handles, and system resources. A thread is a lightweight unit of execution within a process that shares the process's memory and resources. Threads within the same process communicate via shared memory, while processes communicate through inter-process communication mechanisms like pipes and sockets.
+
+A deadlock occurs when two or more processes are each waiting for a resource held by the other, causing all of them to block indefinitely. The four necessary conditions for deadlock are mutual exclusion, hold and wait, no preemption, and circular wait. Deadlock can be prevented by breaking any one of these conditions.
+
+Virtual memory allows a process to use more memory than is physically available by mapping virtual addresses to physical RAM or disk storage. The operating system uses a page table to translate virtual addresses to physical addresses. Pages not in RAM are stored on disk and loaded on demand, a mechanism called demand paging.
+
+A context switch occurs when the CPU switches from executing one process or thread to another. The OS saves the current process's register state and loads the saved state of the next process. Context switches are necessary for multitasking but introduce overhead since they require saving and restoring CPU state.
+
+Scheduling algorithms determine the order in which processes are given CPU time. First-come first-served (FCFS) processes jobs in arrival order. Round-robin assigns each process a fixed time quantum in rotation. Shortest job first (SJF) minimizes average waiting time but requires knowing execution time in advance.
+
+A mutex (mutual exclusion lock) is a synchronization primitive that ensures only one thread accesses a critical section at a time. A semaphore is a more general synchronization mechanism that maintains a counter and supports signaling between threads. Mutexes are typically used for exclusive access, while semaphores are used for signaling or limiting concurrent access to a resource pool.
+
+Paging divides physical memory into fixed-size frames and virtual memory into pages of the same size. When a process accesses a page not in RAM, a page fault occurs and the OS loads the page from disk. Page replacement algorithms such as LRU (least recently used) and FIFO determine which page to evict when memory is full.
