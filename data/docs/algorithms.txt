@@ -1,0 +1,13 @@
+Binary search finds a target value in a sorted array by repeatedly halving the search interval. It compares the target to the middle element and eliminates the half where the target cannot exist. Binary search runs in O(log n) time and O(1) space, making it far more efficient than linear search for large sorted datasets.
+
+Merge sort is a divide-and-conquer sorting algorithm that splits an array into halves, recursively sorts each half, and merges the sorted halves back together. It runs in O(n log n) time in all cases and uses O(n) auxiliary space. Merge sort is stable, meaning equal elements preserve their original relative order.
+
+Quicksort selects a pivot element and partitions the array into elements less than and greater than the pivot, then recursively sorts each partition. Its average-case time complexity is O(n log n), but its worst case is O(n²) when the pivot is consistently the smallest or largest element. In-place variants use O(log n) stack space.
+
+Dijkstra's algorithm finds the shortest path from a source node to all other nodes in a weighted graph with non-negative edge weights. It uses a priority queue to greedily expand the nearest unvisited node. The time complexity is O((V + E) log V) with a binary heap, where V is the number of vertices and E is the number of edges.
+
+Breadth-first search (BFS) explores a graph level by level, visiting all neighbors of a node before moving to the next depth. It uses a queue and runs in O(V + E) time. BFS finds the shortest path in an unweighted graph and is used for cycle detection and connected component discovery.
+
+Dynamic programming solves problems by breaking them into overlapping subproblems and storing their results to avoid redundant computation. It applies when a problem has optimal substructure and overlapping subproblems. Classic examples include the Fibonacci sequence, the 0/1 knapsack problem, and longest common subsequence.
+
+A greedy algorithm makes the locally optimal choice at each step with the hope of reaching a global optimum. Greedy algorithms do not always produce optimal solutions but work correctly for problems like Huffman coding, activity selection, and Kruskal's minimum spanning tree algorithm.
