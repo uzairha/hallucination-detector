@@ -1,0 +1,5 @@
+Transformers are a deep learning architecture introduced in the 2017 paper "Attention Is All You Need" by Vaswani et al. Unlike recurrent neural networks, transformers process entire sequences simultaneously rather than step by step, making them significantly faster to train on modern hardware.
+
+The core mechanism of a transformer is self-attention, which allows every token in a sequence to attend to every other token. Self-attention computes a weighted sum of values based on the similarity between queries and keys, enabling the model to capture long-range dependencies regardless of the distance between tokens in the sequence.
+
+Transformers have become the dominant architecture in natural language processing. Large language models such as GPT, BERT, and LLaMA are all built on the transformer architecture. They are used for tasks including text generation, translation, summarization, question answering, and code completion.
