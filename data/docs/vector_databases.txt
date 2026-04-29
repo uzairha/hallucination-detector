@@ -1,0 +1,5 @@
+Vector databases are storage systems designed to index and search high-dimensional vectors efficiently. Unlike traditional relational databases that search by exact match, vector databases retrieve the nearest neighbors to a query vector using approximate nearest neighbor algorithms.
+
+Similarity search works by computing a distance metric, most commonly cosine similarity or Euclidean distance, between the query vector and all stored vectors. Because computing this over millions of vectors naively is slow, vector databases use indexing structures such as HNSW or inverted file indexes to reduce the search space.
+
+FAISS, developed by Meta AI Research, is one of the most widely used vector similarity search libraries. It supports both exact and approximate search and runs efficiently on CPUs and GPUs. Other popular vector databases include Pinecone, Weaviate, and Chroma, which add persistence, filtering, and cloud hosting on top of similar search functionality.
