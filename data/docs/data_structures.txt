@@ -1,0 +1,5 @@
+A hash table is a data structure that maps keys to values using a hash function. The hash function converts a key into an integer index, which determines where the value is stored in an underlying array. Average-case lookup, insertion, and deletion all run in O(1) time, making hash tables one of the most efficient structures for key-value storage. Collisions, where two keys hash to the same index, are handled through chaining or open addressing.
+
+Arrays store elements in contiguous memory locations and provide O(1) access by index. They are the foundation of many higher-level data structures. Dynamic arrays, such as Python lists, resize automatically when capacity is exceeded, amortizing the cost of resizing over many insertions.
+
+Binary search trees store elements in sorted order such that each node's left subtree contains smaller values and the right subtree contains larger values. Balanced variants such as AVL trees and red-black trees guarantee O(log n) time for search, insertion, and deletion by maintaining bounded tree height.
