@@ -1,0 +1,5 @@
+Embeddings are dense numerical representations of data, typically text, in a continuous vector space. Each word, sentence, or document is mapped to a fixed-length array of floating-point numbers. These vectors capture semantic meaning so that similar concepts are located close together in the vector space.
+
+Text is converted to vectors by passing it through a neural network trained on large corpora. Models such as Word2Vec, GloVe, and sentence-transformers learn to produce vectors by predicting context words or by optimizing for semantic similarity on labeled datasets. The result is that the word "king" minus "man" plus "woman" produces a vector close to "queen."
+
+The practical value of embeddings is that mathematical operations on vectors correspond to semantic relationships in language. Cosine similarity between two vectors measures how semantically related two pieces of text are. This property underpins semantic search, recommendation systems, and retrieval-augmented generation pipelines.
