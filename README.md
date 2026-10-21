@@ -11,7 +11,7 @@ A Streamlit app that fact-checks AI-generated answers against a curated CS and A
 
 ## Knowledge Base
 
-Covers core CS and AI topics: transformers, embeddings, vector databases, data structures, networking, and more. Stored as `.txt` files in `data/docs/`.
+Covers 19 core CS and AI topics: algorithms, data structures, databases, operating systems, networking, software engineering, testing, Git and CI/CD, cloud and DevOps, web development, cybersecurity, machine learning, deep learning, transformers, LLMs, embeddings, vector databases, RAG, and AI safety. Stored as `.txt` files in `data/docs/`, with references for each file in `data/docs/SOURCES.md`.
 
 ## Setup
 
