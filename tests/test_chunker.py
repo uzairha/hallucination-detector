@@ -1,3 +1,5 @@
+import pytest
+
 from utils.chunker import chunk_documents
 
 
@@ -33,3 +35,22 @@ def test_empty_doc_gives_no_chunks():
 def test_chunk_ids_restart_per_document():
     chunks = chunk_documents([make_doc(5, "a.txt"), make_doc(5, "b.txt")], chunk_size=10, overlap=3)
     assert [(c["filename"], c["chunk_id"]) for c in chunks] == [("a.txt", 0), ("b.txt", 0)]
+
+
+def test_doc_of_exactly_chunk_size_gives_one_chunk():
+    chunks = chunk_documents([make_doc(10)], chunk_size=10, overlap=3)
+    assert len(chunks) == 1
+    assert len(chunks[0]["text"].split()) == 10
+
+
+def test_no_chunk_is_only_a_repeat_of_the_previous_tail():
+    # 12 words: [w0..w9] then [w7..w11], which reaches the end, so chunking stops there
+    chunks = chunk_documents([make_doc(12)], chunk_size=10, overlap=3)
+    assert [c["text"].split()[0] for c in chunks] == ["w0", "w7"]
+    assert chunks[-1]["text"].split()[-1] == "w11"
+
+
+@pytest.mark.parametrize("chunk_size, overlap", [(10, 10), (10, 15), (0, 0), (10, -1)])
+def test_invalid_sizes_raise_instead_of_looping(chunk_size, overlap):
+    with pytest.raises(ValueError):
+        chunk_documents([make_doc(25)], chunk_size=chunk_size, overlap=overlap)

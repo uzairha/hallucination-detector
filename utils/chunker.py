@@ -10,6 +10,12 @@ def chunk_documents(
     Splits each document into smaller overlapping chunks of words.
     Returns a list of dicts with 'filename', 'chunk_id', and 'text'.
     """
+    # Each step must move forward, otherwise the loop below never ends
+    if chunk_size <= 0 or not 0 <= overlap < chunk_size:
+        raise ValueError(
+            f"Need chunk_size > 0 and 0 <= overlap < chunk_size (got {chunk_size}, {overlap})"
+        )
+
     all_chunks = []
 
     for doc in documents:
@@ -32,6 +38,10 @@ def chunk_documents(
             })
 
             chunk_id += 1
+
+            # This chunk reached the end of the doc; another one would only repeat its tail
+            if end >= total_words:
+                break
 
             # Move forward by (chunk_size - overlap) so chunks share some words
             start += chunk_size - overlap
