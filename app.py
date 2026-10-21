@@ -1,3 +1,4 @@
+import html
 import streamlit as st
 from utils.claims import extract_claims
 from utils.verifier import verify_all_claims
@@ -225,7 +226,8 @@ if analyze_clicked:
             for r in results:
                 v = r["verdict"]
                 cls = badge_class.get(v, "badge-unsupported")
-                evidence_html = "".join(f"<p>{e}</p>" for e in r.get("evidence", []))
+                # LLM output and evidence are untrusted text — escape before embedding in HTML
+                evidence_html = "".join(f"<p>{html.escape(e)}</p>" for e in r.get("evidence", []))
 
                 correct_html = ""
                 if r.get("correct"):
@@ -235,14 +237,14 @@ if analyze_clicked:
                     <span style="font-size:0.65rem; font-weight:600; letter-spacing:0.1em;
                                  text-transform:uppercase; color:#4caf50;">Correct</span>
                     <div style="font-size:0.78rem; color:#aaa; margin-top:0.25rem;
-                                line-height:1.5;">{r['correct']}</div>
+                                line-height:1.5;">{html.escape(r['correct'])}</div>
                   </div>"""
 
                 st.markdown(f"""
                 <div class="claim-card">
-                  <span class="badge {cls}">{v}</span>
-                  <div class="claim-text">{r['claim']}</div>
-                  <div class="explanation-text">{r['explanation']}</div>
+                  <span class="badge {cls}">{html.escape(v)}</span>
+                  <div class="claim-text">{html.escape(r['claim'])}</div>
+                  <div class="explanation-text">{html.escape(r['explanation'])}</div>
                   {correct_html}
                   <details style="margin-top:0.6rem;">
                     <summary>View evidence</summary>
