@@ -1,0 +1,35 @@
+CYBERSECURITY: CORE CONCEPTS
+
+The CIA triad stands for confidentiality, integrity, and availability. Confidentiality prevents unauthorized disclosure. Integrity prevents unauthorized modification. Availability ensures authorized users can access systems and data when needed. Authentication verifies identity, authorization decides permissions, and accounting or auditing records actions.
+
+The principle of least privilege gives each user or process only the access it needs. Defense in depth uses multiple independent layers of security controls. Zero trust architecture, described in NIST SP 800-207, assumes no implicit trust based on network location and verifies every access request. Security through obscurity should not be relied on as a primary control. Kerckhoffs's principle states that a cryptosystem should remain secure even if everything about it except the key is public.
+
+A vulnerability is a weakness that can be exploited. A threat is a potential cause of harm. Risk combines the likelihood of a threat exploiting a vulnerability with the impact. An exploit is code or a technique that takes advantage of a vulnerability. A zero-day vulnerability is one unknown to the vendor, or one for which no patch is available. CVE (Common Vulnerabilities and Exposures) assigns identifiers to publicly disclosed vulnerabilities, while CVSS (Common Vulnerability Scoring System) rates their severity on a scale from 0 to 10. CWE (Common Weakness Enumeration) catalogs types of software weaknesses.
+
+CYBERSECURITY: CRYPTOGRAPHY
+
+Encoding transforms data into another format and is not security: base64 is encoding, not encryption. Encryption is reversible with a key. Hashing is a one-way function that produces a fixed-size digest. Symmetric encryption uses the same key to encrypt and decrypt. AES is the standard symmetric cipher, with key sizes of 128, 192, or 256 bits. Asymmetric, or public-key, cryptography uses a public and private key pair. RSA and elliptic-curve cryptography are examples. Asymmetric cryptography is much slower than symmetric cryptography, so protocols such as TLS use it to establish shared symmetric keys.
+
+Authenticated encryption modes, such as AES-GCM and ChaCha20-Poly1305, provide both confidentiality and integrity. ECB mode is insecure because identical plaintext blocks produce identical ciphertext blocks. A digital signature is created with a private key and verified with the corresponding public key, providing integrity, authenticity, and non-repudiation. A message authentication code (MAC), such as HMAC, uses a shared secret key to provide integrity and authenticity.
+
+MD5 and SHA-1 are broken for collision resistance and should not be used for signatures or certificates. SHA-256 and SHA-3 are current secure hash functions. Passwords should not be stored with fast general-purpose hashes like plain SHA-256. They should use slow, salted password-hashing functions such as Argon2, bcrypt, scrypt, or PBKDF2. A salt is a unique random value stored alongside each password hash. A salt defeats precomputed rainbow-table attacks and does not need to be secret.
+
+NIST standardized its first post-quantum cryptography algorithms in August 2024: ML-KEM (FIPS 203) for key encapsulation, and ML-DSA (FIPS 204) and SLH-DSA (FIPS 205) for digital signatures. Shor's algorithm would allow a sufficiently large quantum computer to break RSA and elliptic-curve cryptography. Grover's algorithm gives only a quadratic speedup against symmetric ciphers, so larger key sizes such as AES-256 mitigate it.
+
+CYBERSECURITY: WEB APPLICATION VULNERABILITIES
+
+The OWASP Top 10 is an awareness document listing the most critical web application security risk categories. The 2025 edition lists, in order: A01 Broken Access Control, A02 Security Misconfiguration, A03 Software Supply Chain Failures, A04 Cryptographic Failures, A05 Injection, A06 Insecure Design, A07 Authentication Failures, A08 Software or Data Integrity Failures, A09 Security Logging and Alerting Failures, and A10 Mishandling of Exceptional Conditions. In the 2021 edition, Broken Access Control was also first, Cryptographic Failures was second, and Injection was third. Server-side request forgery (SSRF) had its own category in 2021 and was merged into Broken Access Control in 2025.
+
+SQL injection occurs when untrusted input is concatenated into a SQL query. The primary defense is parameterized queries, also called prepared statements. Input escaping and allowlist validation are secondary defenses. Cross-site scripting (XSS) occurs when untrusted data is rendered as executable script in a victim's browser. The main types are stored, reflected, and DOM-based XSS. Defenses include context-aware output encoding and Content Security Policy.
+
+Cross-site request forgery (CSRF) tricks a logged-in user's browser into sending an unwanted state-changing request. Defenses include anti-CSRF tokens, SameSite cookies, and checking the Origin header. CSRF and XSS are different: CSRF abuses the trust a site has in the user's browser, while XSS injects malicious script into a trusted site.
+
+Insecure direct object reference (IDOR) is a form of broken access control in which changing an identifier in a request exposes another user's data. Path traversal uses sequences such as ../ to access files outside an intended directory. Server-side request forgery (SSRF) makes a server send requests to unintended destinations, such as internal services or cloud metadata endpoints.
+
+CYBERSECURITY: ATTACKS AND DEFENSES
+
+Phishing uses deceptive messages to steal credentials or deliver malware. Social engineering manipulates people rather than technology. Multi-factor authentication (MFA) combines two or more factor types: something you know, something you have, and something you are. Two passwords count as only one factor type. SMS-based one-time codes are weaker than authenticator apps or FIDO2/WebAuthn security keys because of SIM-swapping and interception. Passkeys, built on FIDO2/WebAuthn, are resistant to phishing.
+
+A denial-of-service (DoS) attack makes a service unavailable. A distributed denial-of-service (DDoS) attack uses many sources at once. A man-in-the-middle (MITM), or on-path, attack intercepts or alters communication between two parties. Ransomware encrypts victims' data and demands payment. A firewall filters traffic by rules. An intrusion detection system (IDS) monitors and alerts, while an intrusion prevention system (IPS) can also block. A VPN encrypts traffic between a device and the VPN endpoint, but it does not make a user anonymous or protect against malware.
+
+NIST Cybersecurity Framework 2.0, released in February 2024, organizes cybersecurity outcomes into six functions: Govern, Identify, Protect, Detect, Respond, and Recover. Govern was added in version 2.0.

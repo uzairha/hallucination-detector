@@ -1,0 +1,37 @@
+CLOUD COMPUTING: DEFINITIONS AND SERVICE MODELS
+
+NIST Special Publication 800-145 defines cloud computing by five essential characteristics: on-demand self-service, broad network access, resource pooling, rapid elasticity, and measured service. It defines three service models and four deployment models.
+
+Infrastructure as a Service (IaaS) provides virtual machines, storage, and networking, and the customer manages the operating system and everything above it. Amazon EC2 and Google Compute Engine are examples. Platform as a Service (PaaS) provides a managed platform for running applications, so the customer manages the application and its data. Heroku and Google App Engine are examples. Software as a Service (SaaS) delivers complete applications over the internet, such as Gmail or Salesforce. The four deployment models are public cloud, private cloud, community cloud, and hybrid cloud.
+
+The shared responsibility model divides security duties between the cloud provider and the customer. The provider secures the underlying infrastructure ("security of the cloud"). The customer secures what they deploy and configure, such as data, identity and access settings, and network rules ("security in the cloud"). A common misconception is that the cloud provider is responsible for all security.
+
+Serverless computing, such as AWS Lambda, Azure Functions, and Google Cloud Functions, runs code without the user managing servers, and billing is typically per invocation and execution time. Servers still exist, but the provider manages them. A cold start is the extra latency when a new function instance is initialized.
+
+Regions are separate geographic areas, and availability zones are isolated data-center locations within a region. Deploying across multiple availability zones improves fault tolerance. High availability means minimizing downtime. Disaster recovery means restoring service after a major failure. Recovery time objective (RTO) is the target time to restore service, and recovery point objective (RPO) is the maximum acceptable amount of data loss measured in time.
+
+Common AWS services include EC2 (virtual machines), S3 (object storage), RDS (managed relational databases), DynamoDB (managed NoSQL key-value and document database), Lambda (serverless functions), IAM (identity and access management), VPC (virtual private cloud networking), CloudFront (CDN), and ECS and EKS (container orchestration). Amazon S3 has provided strong read-after-write consistency for all requests since December 2020.
+
+DEVOPS: CONTAINERS
+
+A container packages an application with its dependencies and runs as an isolated process that shares the host operating system's kernel. On Linux, containers are built on namespaces for isolation and control groups (cgroups) for resource limits. A virtual machine runs a full guest operating system with its own kernel on a hypervisor. Containers are usually lighter and start faster than virtual machines, but they provide weaker isolation because they share the host kernel. A common misconception is that containers are lightweight virtual machines with their own kernels.
+
+Docker is a platform for building and running containers. A Docker image is a read-only template built from layers, usually defined in a Dockerfile. A container is a running instance of an image. The Open Container Initiative (OCI) defines standard specifications for container images and runtimes. Docker Compose defines multi-container applications in a YAML file.
+
+DEVOPS: KUBERNETES
+
+Kubernetes is an open-source container orchestration system originally designed at Google and now maintained by the Cloud Native Computing Foundation (CNCF). The smallest deployable unit in Kubernetes is the Pod, which holds one or more containers that share networking and storage. A Deployment manages replicated Pods and rolling updates. A Service provides a stable network endpoint and load balancing for a set of Pods. An Ingress manages external HTTP access to Services. ConfigMaps hold non-secret configuration. Secrets hold sensitive data, which is base64-encoded by default rather than encrypted, unless encryption at rest is configured. A StatefulSet manages stateful applications with stable identities. A DaemonSet runs a Pod on every node or on selected nodes. The control plane includes the API server, etcd, the scheduler, and the controller manager. Each worker node runs a kubelet.
+
+DEVOPS: INFRASTRUCTURE AS CODE
+
+Infrastructure as Code (IaC) manages infrastructure through machine-readable definition files rather than manual configuration. Terraform, by HashiCorp, uses declarative HCL configuration and keeps a state file. OpenTofu is an open-source fork of Terraform. AWS CloudFormation is AWS's native IaC service. Ansible is an agentless configuration management tool that uses YAML playbooks over SSH. Declarative tools describe the desired end state. Imperative tools describe the steps to reach it.
+
+Immutable infrastructure replaces servers instead of modifying them in place. Configuration drift is the gradual divergence of real infrastructure from its intended definition.
+
+DEVOPS: RELIABILITY AND OBSERVABILITY
+
+Site Reliability Engineering (SRE) originated at Google. A service level indicator (SLI) is a measured quantity, such as request latency or error rate. A service level objective (SLO) is a target value for an SLI. A service level agreement (SLA) is a contract with consequences if objectives are missed. An error budget is the amount of unreliability allowed by an SLO, for example 0.1% of requests for a 99.9% objective. A 99.9% availability target allows about 43.8 minutes of downtime per month, and 99.99% allows about 4.4 minutes per month.
+
+Observability is commonly described through three types of telemetry: metrics, logs, and traces. Distributed tracing follows a request across services. OpenTelemetry is a CNCF project that provides vendor-neutral APIs and SDKs for telemetry. Prometheus is a pull-based metrics system, and Grafana is commonly used to visualize metrics.
+
+Horizontal scaling adds more instances, and vertical scaling adds more resources to one instance. Autoscaling adjusts capacity automatically based on metrics.

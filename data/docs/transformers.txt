@@ -1,5 +1,31 @@
-Transformers are a deep learning architecture introduced in the 2017 paper "Attention Is All You Need" by Vaswani et al. Unlike recurrent neural networks, transformers process entire sequences simultaneously rather than step by step, making them significantly faster to train on modern hardware.
+TRANSFORMERS: ORIGIN AND STRUCTURE
 
-The core mechanism of a transformer is self-attention, which allows every token in a sequence to attend to every other token. Self-attention computes a weighted sum of values based on the similarity between queries and keys, enabling the model to capture long-range dependencies regardless of the distance between tokens in the sequence.
+The transformer architecture was introduced in the 2017 paper "Attention Is All You Need" by Vaswani et al. at Google. It was originally designed for machine translation and used an encoder-decoder structure. Transformers do not use recurrence or convolution. They rely on attention mechanisms, which lets them process all positions of a sequence in parallel during training, unlike recurrent neural networks. A common misconception is that transformers rely on recurrent layers to handle long-range dependencies. Transformers replaced recurrence with self-attention.
 
-Transformers have become the dominant architecture in natural language processing. Large language models such as GPT, BERT, and LLaMA are all built on the transformer architecture. They are used for tasks including text generation, translation, summarization, question answering, and code completion.
+In the original transformer, each encoder layer has a multi-head self-attention sublayer followed by a position-wise feed-forward network. Each sublayer is wrapped with a residual connection and layer normalization. Each decoder layer adds a cross-attention sublayer that attends to the encoder's output. The original base model had 6 encoder layers, 6 decoder layers, a model dimension of 512, and 8 attention heads.
+
+TRANSFORMERS: ATTENTION
+
+Scaled dot-product attention computes softmax(QK^T / sqrt(d_k)) V, where Q are queries, K are keys, V are values, and d_k is the key dimension. Dividing by the square root of d_k keeps the dot products from growing too large, which would push softmax into regions with very small gradients. Self-attention means the queries, keys, and values all come from the same sequence. Cross-attention means the queries come from one sequence and the keys and values come from another.
+
+Multi-head attention runs several attention operations in parallel, each with its own learned projections, which lets the model attend to different kinds of relationships at once. The heads' outputs are concatenated and projected.
+
+Standard self-attention has time and memory cost that grows quadratically with sequence length, O(n^2), because every token attends to every other token. This quadratic cost is the main obstacle to very long context windows. FlashAttention computes exact attention more efficiently by reducing memory reads and writes. It does not change the attention result. Multi-query attention and grouped-query attention share keys and values across heads to shrink the key-value cache during inference.
+
+TRANSFORMERS: POSITION INFORMATION
+
+Self-attention by itself is permutation-invariant and has no built-in sense of token order, so transformers add position information. The original transformer added fixed sinusoidal positional encodings to the input embeddings. Later models use learned absolute position embeddings, as in BERT and GPT-2, or relative methods such as rotary position embeddings (RoPE) and ALiBi.
+
+TRANSFORMERS: MASKING AND VARIANTS
+
+A causal mask, also called a look-ahead mask, prevents a position from attending to future positions. Decoder-only language models use it so that each prediction depends only on earlier tokens. Encoder-only models such as BERT, from Google in 2018, use bidirectional attention and were pretrained with masked language modeling plus next sentence prediction. They are suited to understanding tasks such as classification and are not designed for open-ended text generation. Decoder-only models such as the GPT family and LLaMA are trained with next-token prediction and are used for text generation. Encoder-decoder models such as T5 and BART are suited to sequence-to-sequence tasks such as translation and summarization.
+
+BERT stands for Bidirectional Encoder Representations from Transformers. GPT stands for Generative Pre-trained Transformer. GPT-1 was released by OpenAI in 2018, GPT-2 in 2019, and GPT-3, with 175 billion parameters, in 2020.
+
+The Vision Transformer (ViT), introduced in 2020, applies transformers to images by splitting them into fixed-size patches that are treated as tokens. Mixture-of-experts (MoE) transformers route each token to a subset of expert feed-forward networks. This increases the total parameter count without activating all parameters for each token.
+
+TRANSFORMERS: INFERENCE
+
+During autoregressive generation, a key-value (KV) cache stores the keys and values of previous tokens so they do not have to be recomputed at each step. The KV cache grows with sequence length and batch size and is a major consumer of memory during inference. Generation produces one token at a time, so output latency grows with the number of output tokens.
+
+The Hugging Face Transformers library provides implementations and pretrained weights for many transformer models. It is a software library and is separate from the transformer architecture itself.

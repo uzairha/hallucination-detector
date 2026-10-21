@@ -1,0 +1,33 @@
+LARGE LANGUAGE MODELS: WHAT THEY ARE
+
+A large language model (LLM) is a neural network, almost always a transformer, trained on large amounts of text to model the probability of the next token given the previous tokens. LLMs generate text autoregressively, one token at a time, with each new token conditioned on all previous tokens in the context. An LLM does not look up answers in a database of facts when it generates text. Its knowledge is encoded in its weights from training, plus whatever is provided in the prompt or retrieved by tools.
+
+Tokens are the units an LLM processes. They are usually subword pieces produced by a tokenizer using algorithms such as byte-pair encoding (BPE), WordPiece, or SentencePiece. A token is not the same as a word. One word can be split into several tokens, and tokenization affects tasks such as counting letters or doing arithmetic. The context window is the maximum number of tokens, including both input and output, that the model can process at once. Text outside the context window is not visible to the model.
+
+LARGE LANGUAGE MODELS: TRAINING STAGES
+
+Pretraining trains the model on a large text corpus with a self-supervised next-token prediction objective. Instruction tuning, or supervised fine-tuning (SFT), trains the model on prompt-response examples so it follows instructions. Reinforcement learning from human feedback (RLHF) trains a reward model on human preference comparisons and then optimizes the language model against that reward, often with PPO. The InstructGPT paper from OpenAI in 2022 popularized this approach. Direct preference optimization (DPO) optimizes on preference data directly without training a separate reward model. Constitutional AI, introduced by Anthropic, uses a set of written principles and AI feedback (RLAIF) to guide model behavior.
+
+A model's knowledge cutoff is the point after which events are not represented in its training data. A model does not automatically know about events after its cutoff unless that information is provided at inference time, for example through retrieval or tools.
+
+LARGE LANGUAGE MODELS: INFERENCE AND DECODING
+
+Decoding strategies choose the next token from the model's predicted probability distribution. Greedy decoding always picks the most likely token. Temperature scales the logits before softmax. A lower temperature makes the output more deterministic, and a higher temperature makes it more varied. A temperature of 0 is commonly used to mean greedy decoding. Even at temperature 0, outputs are not always perfectly reproducible because of floating-point and batching nondeterminism. Top-k sampling restricts choices to the k most likely tokens, and top-p (nucleus) sampling restricts choices to the smallest set of tokens whose cumulative probability exceeds p. Beam search keeps several candidate sequences and is more common in translation than in chat.
+
+A system prompt sets instructions and context that apply to the whole conversation. Few-shot prompting includes examples in the prompt. Zero-shot prompting gives no examples. In-context learning means the model adapts its behavior based on examples in the prompt without any weight updates. Chain-of-thought prompting asks the model to produce intermediate reasoning steps, which often improves performance on multi-step problems.
+
+Parameter-efficient fine-tuning methods update only a small number of parameters. LoRA (low-rank adaptation) adds trainable low-rank matrices to frozen weights. QLoRA combines LoRA with a 4-bit quantized base model to reduce memory use.
+
+LARGE LANGUAGE MODELS: HALLUCINATIONS AND LIMITATIONS
+
+A hallucination is output that is fluent and confident but factually incorrect, unsupported by the source, or fabricated, such as invented citations, quotes, or API functions. Hallucinations occur because LLMs are trained to produce plausible continuations, not to verify truth, and because training rewards guessing over expressing uncertainty. Hallucinations are often divided into intrinsic hallucinations, which contradict the provided source, and extrinsic hallucinations, which cannot be verified from the source.
+
+Mitigations include retrieval-augmented generation that grounds answers in retrieved documents, requiring citations, letting models abstain or say they do not know, tool use for calculations and lookups, self-consistency checks, and fact-checking pipelines that extract claims and verify each one against trusted evidence. A common misconception is that retrieval-augmented generation eliminates hallucinations. RAG reduces them, but a model can still misread, ignore, or go beyond the retrieved text, and retrieval can return irrelevant or wrong passages.
+
+Other known limitations include sensitivity to prompt wording, the "lost in the middle" effect where information in the middle of a long context is used less reliably than information at the beginning or end, difficulty with exact arithmetic and character-level tasks because of tokenization, and sycophancy, which is a tendency to agree with the user. An LLM's stated confidence is not a reliable measure of correctness.
+
+LARGE LANGUAGE MODELS: TERMINOLOGY
+
+Parameters are the learned weights of a model, and model size is usually reported as a parameter count. Open-weight models publish their weights. That is not always the same as open source, because licenses, training data, and code may not be released. Function calling, or tool use, lets a model output structured requests that an application executes, such as API calls. An AI agent is a system that uses an LLM to plan and take actions with tools across multiple steps.
+
+Perplexity measures how well a language model predicts text, and lower is better. Perplexity does not directly measure factual accuracy or helpfulness. Benchmarks such as MMLU measure performance on specific tasks, and scores can be inflated by contamination, where benchmark data appears in the training data.

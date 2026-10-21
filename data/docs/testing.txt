@@ -1,0 +1,35 @@
+TESTING: LEVELS OF TESTING
+
+Unit tests check small units of code, such as a function or class, in isolation. They are fast and are usually written by developers. Integration tests check that multiple components work together, such as code plus a database or two services. System tests check the complete integrated system against its requirements. End-to-end tests exercise full user workflows through the real interface. Acceptance tests check whether the system meets business requirements and is acceptable to users or stakeholders. User acceptance testing (UAT) is performed by end users or their representatives.
+
+The test pyramid, popularized by Mike Cohn, recommends many fast unit tests, fewer integration tests, and even fewer slow end-to-end tests. Regression testing re-runs existing tests after changes to confirm that previously working behavior still works. Smoke testing is a quick, shallow check that the most important functions work after a build or deployment. Sanity testing is a narrow check of specific functionality after a small change.
+
+TESTING: BLACK-BOX AND WHITE-BOX TESTING
+
+Black-box testing designs tests from the specification without looking at the internal code. White-box testing designs tests using knowledge of the internal structure, for example to cover particular branches. Equivalence partitioning divides inputs into classes that should behave the same way and tests one representative from each class. Boundary value analysis tests values at and just around the edges of input ranges, because off-by-one errors cluster at boundaries.
+
+TESTING: COVERAGE
+
+Statement coverage measures the fraction of statements that were executed during testing. Branch coverage measures whether each branch of each decision, both true and false, was executed. Branch coverage is stronger than statement coverage. Modified condition/decision coverage (MC/DC) is required for the most critical airborne software under DO-178C. A common misconception is that 100% code coverage means software is bug-free. Coverage shows that code was executed, not that its behavior was checked with meaningful assertions, and it cannot reveal missing code or missing requirements.
+
+TESTING: TEST DOUBLES
+
+Test double is the general term for an object that stands in for a real dependency in a test. A dummy is passed around but never used. A stub returns canned responses. A spy records how it was called. A mock is pre-programmed with expectations about the calls it should receive and verifies them. A fake has a working but simplified implementation, such as an in-memory database. This terminology was popularized by Gerard Meszaros and Martin Fowler. A common misconception is that every test double is a mock.
+
+TESTING: PRACTICES
+
+Test-driven development (TDD) follows a red-green-refactor cycle: write a failing test, write the minimum code to make it pass, then refactor. TDD is associated with Kent Beck. Behavior-driven development (BDD) expresses tests as scenarios of behavior, often in a Given-When-Then format using tools such as Cucumber. The Arrange-Act-Assert pattern structures a test into setup, the action under test, and verification.
+
+A flaky test passes or fails nondeterministically without any code change. Common causes are timing dependencies, shared state between tests, test-order dependence, and reliance on network or external services. Tests should be independent and repeatable.
+
+Property-based testing generates many inputs automatically and checks that general properties hold. Hypothesis is a Python library for it, and QuickCheck is the original Haskell library. Fuzz testing feeds random or malformed inputs to a program to find crashes and security bugs. Mutation testing introduces small changes, called mutants, into the code and checks whether the test suite catches them, which measures how effective the tests are.
+
+Performance testing includes load testing, which checks behavior under expected load; stress testing, which pushes the system beyond normal limits to find breaking points; and soak or endurance testing, which runs under load for an extended period to find problems such as memory leaks.
+
+TESTING: VERIFICATION, VALIDATION, AND TERMINOLOGY
+
+Verification asks whether the product is being built right, meaning it conforms to its specification. Validation asks whether the right product is being built, meaning it meets the user's actual needs. In ISTQB terminology, a person makes an error, also called a mistake, which produces a defect, also called a bug or fault, in the code. When the defect is executed, it can cause a failure, which is an observable deviation from expected behavior. Exhaustive testing is impossible for all but trivial programs, and testing can show the presence of defects but not their absence, a point often attributed to Edsger Dijkstra.
+
+TESTING: COMMON FRAMEWORKS
+
+Common testing frameworks include pytest and unittest for Python, JUnit for Java, Jest, Vitest, and Mocha for JavaScript, and NUnit and xUnit.net for C#. Selenium, Playwright, and Cypress are used for browser-based end-to-end testing. In Python, unittest is part of the standard library, and pytest is a third-party package.

@@ -1,13 +1,41 @@
-A process is an instance of a running program. It has its own memory space, file handles, and system resources. A thread is a lightweight unit of execution within a process that shares the process's memory and resources. Threads within the same process communicate via shared memory, while processes communicate through inter-process communication mechanisms like pipes and sockets.
+OPERATING SYSTEMS: KERNEL AND SYSTEM CALLS
 
-A deadlock occurs when two or more processes are each waiting for a resource held by the other, causing all of them to block indefinitely. The four necessary conditions for deadlock are mutual exclusion, hold and wait, no preemption, and circular wait. Deadlock can be prevented by breaking any one of these conditions.
+An operating system kernel manages the CPU, memory, devices, and file systems, and runs in a privileged mode called kernel mode. User programs run in user mode and request kernel services through system calls, such as read, write, open, fork, and execve on Unix-like systems. A monolithic kernel, such as Linux, runs most operating system services in kernel space. A microkernel keeps only minimal services in the kernel and runs drivers and services in user space. Linux is a kernel, not a complete operating system. Distributions combine the Linux kernel with user-space tools.
 
-Virtual memory allows a process to use more memory than is physically available by mapping virtual addresses to physical RAM or disk storage. The operating system uses a page table to translate virtual addresses to physical addresses. Pages not in RAM are stored on disk and loaded on demand, a mechanism called demand paging.
+OPERATING SYSTEMS: PROCESSES AND THREADS
 
-A context switch occurs when the CPU switches from executing one process or thread to another. The OS saves the current process's register state and loads the saved state of the next process. Context switches are necessary for multitasking but introduce overhead since they require saving and restoring CPU state.
+A process is a running program with its own virtual address space, open files, and other resources. A thread is a unit of execution within a process. Threads in the same process share the address space and heap, but each thread has its own stack, registers, and program counter. Creating and switching threads is usually cheaper than doing so for processes. Because threads share memory, they need synchronization to avoid data races.
 
-Scheduling algorithms determine the order in which processes are given CPU time. First-come first-served (FCFS) processes jobs in arrival order. Round-robin assigns each process a fixed time quantum in rotation. Shortest job first (SJF) minimizes average waiting time but requires knowing execution time in advance.
+On Unix-like systems, fork creates a child process that starts as a copy of the parent and uses copy-on-write pages. exec replaces the current process image with a new program. A zombie process has finished but has not yet been reaped by its parent with wait. An orphan process is one whose parent has exited. It is adopted by init or a subreaper.
 
-A mutex (mutual exclusion lock) is a synchronization primitive that ensures only one thread accesses a critical section at a time. A semaphore is a more general synchronization mechanism that maintains a counter and supports signaling between threads. Mutexes are typically used for exclusive access, while semaphores are used for signaling or limiting concurrent access to a resource pool.
+A context switch saves the state of the running process or thread and restores another one. Context switches add overhead.
 
-Paging divides physical memory into fixed-size frames and virtual memory into pages of the same size. When a process accesses a page not in RAM, a page fault occurs and the OS loads the page from disk. Page replacement algorithms such as LRU (least recently used) and FIFO determine which page to evict when memory is full.
+OPERATING SYSTEMS: CONCURRENCY VERSUS PARALLELISM
+
+Concurrency means structuring a program so that multiple tasks make progress during overlapping time periods. Parallelism means executing multiple tasks at the same instant on multiple cores. Concurrency is possible on a single core through interleaving, but parallelism requires multiple cores or processors.
+
+In CPython, the Global Interpreter Lock (GIL) allows only one thread to execute Python bytecode at a time. This prevents parallel speedup for CPU-bound pure-Python threads, but threads still help with I/O-bound work. Python 3.13 introduced an experimental free-threaded build without the GIL. The GIL is a feature of the CPython implementation, not of the Python language.
+
+OPERATING SYSTEMS: SYNCHRONIZATION
+
+A race condition occurs when correctness depends on the relative timing of concurrent operations. A critical section is code that accesses shared state and must not be executed by more than one thread at a time. A mutex provides mutual exclusion and is owned by the thread that locked it. A semaphore is a counter that allows up to N concurrent holders. A binary semaphore is similar to a mutex but has no ownership. A condition variable lets threads wait until a condition becomes true and is used together with a mutex.
+
+A deadlock requires four conditions to hold at once, known as the Coffman conditions: mutual exclusion, hold and wait, no preemption, and circular wait. Breaking any one of them prevents deadlock, for example by always acquiring locks in a consistent global order. A livelock is when threads keep changing state in response to each other without making progress. Starvation is when a thread is perpetually denied the resources it needs.
+
+OPERATING SYSTEMS: SCHEDULING
+
+CPU scheduling algorithms include first-come first-served (FCFS), shortest job first (SJF), shortest remaining time first, round robin with a time quantum, priority scheduling, and multilevel feedback queues. Round robin is preemptive and gives fair time slices. SJF minimizes average waiting time but requires knowing burst lengths in advance and can starve long jobs. Linux used the Completely Fair Scheduler (CFS) from kernel 2.6.23 and replaced it with the EEVDF scheduler in kernel 6.6.
+
+OPERATING SYSTEMS: MEMORY MANAGEMENT
+
+Virtual memory gives each process its own address space, which the memory management unit (MMU) maps to physical memory through page tables. Pages are fixed-size blocks, commonly 4 KiB. The translation lookaside buffer (TLB) caches recent virtual-to-physical address translations. A page fault occurs when a process accesses a page that is not currently mapped into physical memory. The operating system then loads the page, or terminates the process if the access is invalid. Thrashing occurs when the system spends most of its time swapping pages instead of doing useful work.
+
+Page replacement algorithms include FIFO, LRU (least recently used), and the clock algorithm, which approximates LRU. Belady's anomaly is the counterintuitive case in which FIFO page replacement causes more page faults when given more frames. LRU does not suffer from Belady's anomaly.
+
+The stack holds function call frames and local variables and is managed automatically. The heap holds dynamically allocated memory. A memory leak occurs when allocated memory is no longer reachable or no longer needed but is never freed. Garbage collection reduces manual memory errors but does not prevent every leak, because objects that stay referenced are not collected.
+
+OPERATING SYSTEMS: FILES AND I/O
+
+On Unix-like systems, a file descriptor is a small integer that refers to an open file, socket, or pipe. Descriptors 0, 1, and 2 are standard input, standard output, and standard error. An inode stores file metadata and the locations of the file's data blocks, but not the file name. Directory entries map names to inodes. A hard link is another directory entry pointing to the same inode. A symbolic link is a separate file that contains a path. Unix file permissions are read, write, and execute for the owner, the group, and others. For example, chmod 755 gives the owner read, write, and execute, and gives the group and others read and execute.
+
+Blocking I/O makes the calling thread wait until the operation completes. Non-blocking I/O and I/O multiplexing, through select, poll, epoll on Linux, and kqueue on BSD and macOS, let one thread handle many connections. An interrupt is a signal from hardware that causes the CPU to run a handler. A trap or exception is caused by the currently running instruction.

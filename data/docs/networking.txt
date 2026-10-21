@@ -1,5 +1,39 @@
-TCP, the Transmission Control Protocol, is a connection-oriented protocol that guarantees reliable, ordered delivery of data between two hosts. Before data is transmitted, TCP performs a three-way handshake to establish a connection. It uses acknowledgments, retransmissions, and flow control to ensure every packet arrives correctly and in order. TCP is used by applications where data integrity is critical, such as web browsing, email, and file transfer.
+NETWORKING: MODELS AND LAYERS
 
-UDP, the User Datagram Protocol, is a connectionless protocol that sends packets without establishing a connection or guaranteeing delivery. There is no handshake, no acknowledgment, and no retransmission. UDP has lower latency and overhead than TCP, making it suitable for applications where speed matters more than reliability, such as video streaming, online gaming, and DNS lookups.
+The OSI model has seven layers: physical, data link, network, transport, session, presentation, and application. The TCP/IP model, also called the Internet protocol suite, is usually described with four layers: link, internet, transport, and application. The OSI model is mainly a teaching and reference model. The Internet is built on the TCP/IP suite. Ethernet and Wi-Fi operate at the link layer, IP at the network or internet layer, TCP and UDP at the transport layer, and HTTP, DNS, SMTP, and SSH at the application layer.
 
-Data transmission over a network is divided into layers described by models such as the OSI model. The transport layer, where TCP and UDP operate, is responsible for end-to-end communication between processes. Below it, the network layer handles routing packets across networks using IP addresses. The physical and data link layers handle the actual transmission of bits over physical media.
+NETWORKING: IP ADDRESSING
+
+IPv4 addresses are 32 bits long, which gives about 4.3 billion addresses, and are written in dotted decimal such as 192.168.1.1. IPv6 addresses are 128 bits long and are written in hexadecimal groups separated by colons. IPv6 is specified in RFC 8200. CIDR notation, such as 10.0.0.0/8, gives the number of network prefix bits. The private IPv4 ranges defined in RFC 1918 are 10.0.0.0/8, 172.16.0.0/12, and 192.168.0.0/16. The 127.0.0.0/8 range is reserved for loopback, and 127.0.0.1 is the usual loopback address. Network address translation (NAT) lets many devices on a private network share one public IPv4 address. NAT is not a security mechanism by design, although it hides internal addresses.
+
+A MAC address is a 48-bit link-layer hardware address used within a local network. ARP (Address Resolution Protocol) maps IPv4 addresses to MAC addresses on a local network. IPv6 uses Neighbor Discovery instead of ARP.
+
+NETWORKING: TCP AND UDP
+
+TCP (Transmission Control Protocol) is connection-oriented and provides reliable, ordered, error-checked delivery of a byte stream, with flow control and congestion control. TCP is specified in RFC 9293, which replaced RFC 793. A TCP connection is set up with a three-way handshake: SYN, SYN-ACK, ACK. It is normally closed with FIN and ACK exchanges and can be aborted with RST. TCP uses a sliding window for flow control. Congestion control algorithms include Reno, CUBIC, and BBR. TCP is stream-oriented, so it does not preserve message boundaries.
+
+UDP (User Datagram Protocol), specified in RFC 768, is connectionless and does not guarantee delivery, ordering, or protection against duplicates. UDP has lower overhead and preserves message boundaries. It is used for DNS queries, real-time voice and video, gaming, and as the base for QUIC. A common misconception is that UDP is always unreliable at the application level. Protocols built on UDP, such as QUIC, add their own reliability.
+
+Port numbers are 16-bit values from 0 to 65535. Ports 0 to 1023 are well-known ports. Common defaults are HTTP on port 80, HTTPS on 443, SSH on 22, DNS on 53, SMTP on 25, PostgreSQL on 5432, and MySQL on 3306.
+
+NETWORKING: DNS
+
+The Domain Name System (DNS) translates domain names into IP addresses and other records. Its core specifications are RFC 1034 and RFC 1035. DNS mostly uses UDP on port 53 and falls back to TCP for large responses and zone transfers. Common record types are A (IPv4 address), AAAA (IPv6 address), CNAME (alias to another name), MX (mail server), TXT (text), NS (authoritative name server), and SOA (start of authority). A recursive resolver queries root servers, then top-level domain servers, then authoritative servers, and caches results according to each record's TTL (time to live). A CNAME record cannot coexist with other records at the same name, which is why a CNAME is not allowed at the zone apex.
+
+NETWORKING: HTTP
+
+HTTP semantics are defined in RFC 9110. HTTP/1.1 is defined in RFC 9112, HTTP/2 in RFC 9113, and HTTP/3 in RFC 9114. HTTP is stateless, meaning each request is independent. State is usually carried with cookies or tokens. HTTP/2 multiplexes many streams over one TCP connection and uses binary framing and header compression (HPACK). HTTP/3 runs over QUIC, which runs over UDP, avoiding TCP-level head-of-line blocking. QUIC is specified in RFC 9000 and builds TLS 1.3 into its handshake.
+
+HTTP methods have defined properties. GET, HEAD, OPTIONS, and TRACE are safe, which means they should not change server state. GET, HEAD, PUT, DELETE, OPTIONS, and TRACE are idempotent, which means repeating the same request has the same intended effect as sending it once. POST is neither safe nor idempotent. PATCH is not idempotent in general.
+
+HTTP status code classes are 1xx informational, 2xx success, 3xx redirection, 4xx client error, and 5xx server error. 200 means OK, 201 Created, 204 No Content, 301 Moved Permanently, 302 Found, 304 Not Modified, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 429 Too Many Requests, 500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable, and 504 Gateway Timeout. Despite its name, 401 means the request lacks valid authentication. 403 means the server understood who the client is but refuses to allow the action.
+
+NETWORKING: TLS AND SECURITY
+
+TLS (Transport Layer Security) provides encryption, integrity, and server authentication, and optionally client authentication. TLS 1.3 is specified in RFC 8446. It reduces the full handshake to one round trip and removes older insecure algorithms such as RSA key exchange and static Diffie-Hellman. SSL is the deprecated predecessor of TLS, and all SSL versions are insecure. HTTPS is HTTP over TLS. HTTPS encrypts the URL path, headers, and body. However, the server's IP address and usually the hostname, through the SNI field and DNS, remain visible to network observers unless additional measures such as Encrypted Client Hello or encrypted DNS are used.
+
+NETWORKING: INFRASTRUCTURE
+
+A router forwards packets between networks using IP addresses. A switch forwards frames within a local network using MAC addresses. A load balancer distributes traffic across servers. Layer 4 load balancers route by IP address and port, and layer 7 load balancers route by application data such as HTTP paths and headers. A reverse proxy sits in front of servers and handles requests on their behalf. A forward proxy acts on behalf of clients. A CDN (content delivery network) caches content at edge locations close to users to reduce latency.
+
+Latency is the time for data to travel from source to destination. Bandwidth is the maximum data rate of a link. Throughput is the data rate actually achieved. Round-trip time (RTT) is the time for a signal to go to the destination and back.

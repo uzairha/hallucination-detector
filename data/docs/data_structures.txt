@@ -1,5 +1,47 @@
-A hash table is a data structure that maps keys to values using a hash function. The hash function converts a key into an integer index, which determines where the value is stored in an underlying array. Average-case lookup, insertion, and deletion all run in O(1) time, making hash tables one of the most efficient structures for key-value storage. Collisions, where two keys hash to the same index, are handled through chaining or open addressing.
+DATA STRUCTURES: ARRAYS AND LISTS
 
-Arrays store elements in contiguous memory locations and provide O(1) access by index. They are the foundation of many higher-level data structures. Dynamic arrays, such as Python lists, resize automatically when capacity is exceeded, amortizing the cost of resizing over many insertions.
+An array stores elements in contiguous memory and supports O(1) access by index. Inserting or deleting an element in the middle of an array takes O(n) time because later elements must be shifted. A dynamic array, such as a Python list, a Java ArrayList, or a C++ std::vector, grows by allocating a larger block, typically a constant-factor larger, and copying the elements. This gives amortized O(1) appends even though an individual append can take O(n) time.
 
-Binary search trees store elements in sorted order such that each node's left subtree contains smaller values and the right subtree contains larger values. Balanced variants such as AVL trees and red-black trees guarantee O(log n) time for search, insertion, and deletion by maintaining bounded tree height.
+A linked list stores nodes that point to the next node, and in a doubly linked list also to the previous node. Access by position takes O(n) time. Insertion or deletion takes O(1) time once you already hold a reference to the right node. A common misconception is that linked lists are always faster than arrays for insertion. Finding the insertion point still takes O(n) time, and linked lists have poor cache locality.
+
+DATA STRUCTURES: STACKS, QUEUES, AND DEQUES
+
+A stack is last-in, first-out (LIFO), with push and pop in O(1) time. A queue is first-in, first-out (FIFO), with enqueue and dequeue in O(1) time when implemented with a linked list or a circular buffer. A deque, or double-ended queue, supports O(1) insertion and removal at both ends. The call stack used for function calls is a stack, which is why very deep recursion can cause a stack overflow.
+
+DATA STRUCTURES: HASH TABLES
+
+A hash table maps keys to values using a hash function. Lookup, insertion, and deletion take O(1) time on average and O(n) time in the worst case, when many keys collide. Collisions are resolved by separate chaining, where each bucket holds a list, or by open addressing, which uses probing such as linear probing, quadratic probing, or double hashing. The load factor is the number of stored entries divided by the number of buckets. Hash tables resize, or rehash, when the load factor passes a threshold to keep operations fast.
+
+Hash tables do not keep keys in sorted order. Python dictionaries have preserved insertion order since Python 3.7, but that is insertion order, not sorted order. Keys must be hashable, and objects that compare equal must have equal hash values.
+
+DATA STRUCTURES: TREES
+
+A binary search tree (BST) keeps every key in a node's left subtree smaller than the node's key and every key in its right subtree larger. Search, insertion, and deletion take O(h) time, where h is the tree's height. An unbalanced BST can degrade to height n, for example after inserting sorted keys, which makes operations O(n). Self-balancing BSTs, such as AVL trees and red-black trees, keep the height at O(log n). AVL trees are more strictly balanced than red-black trees. Java's TreeMap and typical C++ std::map implementations use red-black trees.
+
+An in-order traversal of a BST visits keys in sorted order. Pre-order traversal visits a node before its children, and post-order traversal visits the children before the node. Level-order traversal visits nodes level by level and is implemented with a queue.
+
+A B-tree is a balanced search tree in which nodes hold many keys and have many children, which keeps the tree shallow. B-trees and B+ trees are used for database indexes and file systems because they reduce the number of disk or page reads. In a B+ tree, all values are stored in the leaves and the leaves are linked, which makes range scans efficient.
+
+A trie, or prefix tree, stores strings character by character. Lookup takes time proportional to the length of the key rather than the number of keys stored. Tries are used for autocomplete and prefix matching.
+
+DATA STRUCTURES: HEAPS AND PRIORITY QUEUES
+
+A binary heap is a complete binary tree stored in an array. In a min-heap, every parent is less than or equal to its children. In a max-heap, every parent is greater than or equal to its children. Insertion and extract-min or extract-max take O(log n) time, and peeking at the top takes O(1) time. Building a heap from n elements takes O(n) time, not O(n log n). A heap is not sorted and does not support efficient search for an arbitrary element. Python's heapq module implements a min-heap.
+
+A priority queue is an abstract data type that is usually implemented with a heap.
+
+DATA STRUCTURES: GRAPHS
+
+A graph is represented as an adjacency list or an adjacency matrix. An adjacency list uses O(V + E) space and suits sparse graphs. An adjacency matrix uses O(V^2) space and checks whether an edge exists in O(1) time, which suits dense graphs. A tree is a connected acyclic graph with exactly V - 1 edges.
+
+DATA STRUCTURES: OTHER STRUCTURES
+
+A union-find, or disjoint-set, structure with union by rank and path compression supports operations in nearly constant amortized time, bounded by the inverse Ackermann function. It is used in Kruskal's algorithm and for connected components.
+
+A Bloom filter is a probabilistic set-membership structure. It can return false positives but never false negatives. A standard Bloom filter does not support deletion. A counting Bloom filter variant does.
+
+A skip list is a probabilistic structure of layered linked lists that supports O(log n) expected search, insertion, and deletion.
+
+An LRU (least recently used) cache is commonly implemented by combining a hash map with a doubly linked list, which gives O(1) get and put.
+
+An abstract data type, such as a list, stack, queue, map, or set, defines behavior. A data structure, such as an array, linked list, hash table, or tree, is a concrete way to implement that behavior.

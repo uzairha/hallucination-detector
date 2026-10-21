@@ -1,0 +1,39 @@
+WEB DEVELOPMENT: CORE TECHNOLOGIES
+
+HTML defines the structure of web pages, CSS defines their presentation, and JavaScript adds behavior. The HTML Living Standard is maintained by WHATWG. CSS specifications are developed by the W3C CSS Working Group. JavaScript is standardized as ECMAScript in ECMA-262. HTML is a markup language, not a programming language.
+
+The Document Object Model (DOM) is a tree representation of a document that scripts can read and modify. The browser rendering process parses HTML into the DOM and CSS into the CSSOM, combines them into a render tree, then computes layout and paints. Reflow, also called layout, is generally more expensive than repaint.
+
+WEB DEVELOPMENT: JAVASCRIPT RUNTIME
+
+JavaScript in browsers and in Node.js runs user code on a single main thread with an event loop. Asynchronous operations schedule callbacks. Promise callbacks run as microtasks, which are processed before the next macrotask, such as a setTimeout callback. A common misconception is that setTimeout with a 0 millisecond delay runs immediately. Its callback runs only after the current call stack and all pending microtasks have finished. async and await are syntax built on top of Promises. Web Workers allow JavaScript to run on separate threads in the browser.
+
+In JavaScript, == performs type coercion before comparing, while === compares without coercion. typeof null returns "object", a long-standing quirk of the language. var is function-scoped and hoisted. let and const are block-scoped, and const prevents reassignment of the binding but does not make objects immutable. NaN is not equal to itself, and Number.isNaN tests for it.
+
+Node.js is a JavaScript runtime built on Chrome's V8 engine. It is not a programming language or a framework. Node.js uses libuv for its event loop and thread pool. Express is a minimal web framework for Node.js.
+
+TypeScript is a superset of JavaScript that adds static types and compiles, or transpiles, to JavaScript. Its types are erased at runtime, so they do not by themselves validate data at runtime.
+
+WEB DEVELOPMENT: FRAMEWORKS AND RENDERING
+
+React is a JavaScript library for building user interfaces, created at Facebook (now Meta). React itself is a library, while Next.js is a React framework that adds routing and server rendering. A common misconception is that React updates the DOM by re-rendering the whole page. React compares element trees during reconciliation and applies only the necessary DOM changes. Angular is a framework maintained by Google, and Vue is a progressive framework created by Evan You.
+
+Client-side rendering (CSR) renders the page in the browser with JavaScript. Server-side rendering (SSR) generates HTML on the server for each request. Static site generation (SSG) generates HTML at build time. Hydration attaches JavaScript event handlers to server-rendered HTML. A single-page application (SPA) loads one HTML page and updates content dynamically without full page reloads.
+
+WEB DEVELOPMENT: BROWSER SECURITY MODEL
+
+The same-origin policy restricts how scripts from one origin interact with resources from another origin. An origin is the combination of scheme, host, and port. Cross-Origin Resource Sharing (CORS) is a mechanism that lets a server relax the same-origin policy for specific origins using response headers such as Access-Control-Allow-Origin. Browsers enforce CORS, not servers. CORS is not a protection against attacks on the server, because non-browser clients ignore it. A preflight request uses the OPTIONS method to check permissions before certain cross-origin requests.
+
+Cookies can be marked HttpOnly, which blocks JavaScript access through document.cookie. Secure cookies are only sent over HTTPS. The SameSite attribute (Strict, Lax, or None) controls whether cookies are sent with cross-site requests and helps mitigate CSRF. Content Security Policy (CSP) is a response header that restricts which sources of scripts and other resources a page may load, which helps mitigate cross-site scripting.
+
+localStorage and sessionStorage store string key-value data in the browser. Any script running on the page can read them, so they are not safe places for sensitive tokens if the site is vulnerable to XSS. sessionStorage is cleared when the page session ends, while localStorage persists.
+
+WEB DEVELOPMENT: AUTHENTICATION AND AUTHORIZATION
+
+Authentication verifies who a user is. Authorization decides what an authenticated user is allowed to do. OAuth 2.0, specified in RFC 6749, is an authorization framework for delegated access. It is not by itself an authentication protocol. OpenID Connect is an identity layer built on OAuth 2.0 that adds authentication. JSON Web Tokens (JWT), specified in RFC 7519, are usually signed (JWS) but not encrypted. A common misconception is that a JWT payload is secret. A signed JWT's payload is only base64url-encoded and can be read by anyone. Server-side sessions store session state on the server and give the client an opaque session ID.
+
+WEB DEVELOPMENT: APIS AND DATA FORMATS
+
+JSON (JavaScript Object Notation) is specified in RFC 8259. JSON does not support comments, trailing commas, or single-quoted strings. A webhook is an HTTP callback in which a server sends an HTTP request to a configured URL when an event occurs. WebSockets, specified in RFC 6455, provide a full-duplex, persistent connection that starts with an HTTP upgrade handshake.
+
+Web accessibility is guided by the W3C Web Content Accessibility Guidelines (WCAG), which are organized around four principles: perceivable, operable, understandable, and robust. Semantic HTML elements and ARIA attributes improve accessibility for assistive technologies.

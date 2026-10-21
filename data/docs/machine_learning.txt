@@ -1,0 +1,35 @@
+MACHINE LEARNING: TYPES OF LEARNING
+
+Machine learning is a field of artificial intelligence in which systems learn patterns from data rather than following explicitly programmed rules. Artificial intelligence is the broader field. Machine learning is a subset of AI, and deep learning is a subset of machine learning that uses multi-layer neural networks.
+
+Supervised learning trains on labeled examples, which are input-output pairs. Classification predicts discrete categories, and regression predicts continuous values. Logistic regression, despite its name, is a classification algorithm. Unsupervised learning finds structure in unlabeled data, for example through clustering or dimensionality reduction. Semi-supervised learning combines a small amount of labeled data with a large amount of unlabeled data. Self-supervised learning creates training labels from the data itself, such as predicting the next token or a masked word, and it is how large language models are pretrained. Reinforcement learning trains an agent to take actions in an environment to maximize cumulative reward.
+
+MACHINE LEARNING: COMMON ALGORITHMS
+
+Linear regression models a continuous target as a weighted sum of features and is often fit by minimizing mean squared error. Decision trees split data on feature thresholds and are easy to interpret but prone to overfitting. Random forests average many decision trees trained on bootstrap samples with random feature subsets, which is a form of bagging. Gradient boosting builds trees sequentially, each one correcting the errors of the previous ones. XGBoost, LightGBM, and CatBoost are popular gradient boosting libraries. Support vector machines find a maximum-margin decision boundary and can use kernels for non-linear boundaries.
+
+k-nearest neighbors (k-NN) is a supervised method that classifies by the labels of the closest training points. k-means is an unsupervised clustering algorithm that partitions data into k clusters. k-NN and k-means are different algorithms that are often confused. k-means requires choosing k in advance and can converge to a local optimum depending on its initialization.
+
+Principal component analysis (PCA) is a linear dimensionality reduction method that projects data onto the directions of greatest variance. t-SNE and UMAP are non-linear methods used mainly for visualization. Distances between clusters in a t-SNE plot are not reliably meaningful.
+
+MACHINE LEARNING: GENERALIZATION
+
+Overfitting occurs when a model learns noise in the training data and performs well on training data but poorly on unseen data. Underfitting occurs when a model is too simple to capture the underlying pattern. The bias-variance tradeoff describes how error comes from bias (wrong assumptions, leading to underfitting) and variance (sensitivity to the particular training data, leading to overfitting). Regularization reduces overfitting. L1 regularization (lasso) can drive some weights to exactly zero, while L2 regularization (ridge) shrinks weights toward zero.
+
+Data is typically split into training, validation, and test sets. The validation set is used for tuning hyperparameters and selecting models. The test set should be used only for final evaluation. k-fold cross-validation trains and evaluates the model k times, each time holding out a different fold for evaluation. Data leakage happens when information from outside the training set, such as test data or future information, influences training. It produces overly optimistic results. Features should be normalized or standardized using statistics computed on the training set only.
+
+Parameters are learned from data, such as weights. Hyperparameters are set before training, such as the learning rate, tree depth, or k in k-NN.
+
+MACHINE LEARNING: EVALUATION METRICS
+
+Accuracy is the fraction of correct predictions and can be misleading on imbalanced datasets. Precision is TP / (TP + FP), the fraction of predicted positives that are actually positive. Recall, also called sensitivity or true positive rate, is TP / (TP + FN), the fraction of actual positives that were found. The F1 score is the harmonic mean of precision and recall. Specificity is TN / (TN + FP). A confusion matrix tabulates true positives, false positives, true negatives, and false negatives.
+
+The ROC curve plots the true positive rate against the false positive rate across classification thresholds. AUC (area under the ROC curve) of 0.5 corresponds to random guessing and 1.0 to perfect ranking. Precision-recall curves are often more informative than ROC curves when the positive class is rare. Regression metrics include mean squared error (MSE), root mean squared error (RMSE), mean absolute error (MAE), and R-squared.
+
+MACHINE LEARNING: OTHER KEY CONCEPTS
+
+Correlation does not imply causation. A model that predicts well has learned associations in its training data, which are not necessarily causal relationships. Feature engineering creates useful input features from raw data. One-hot encoding represents categorical variables as binary vectors.
+
+The curse of dimensionality refers to problems that arise in high-dimensional spaces, where data becomes sparse and distance measures become less informative. Class imbalance can be addressed with resampling, class weights, or appropriate metrics. Concept drift is a change over time in the relationship between inputs and outputs. Data drift is a change in the input distribution.
+
+The no free lunch theorem states that no single learning algorithm is best for every problem when performance is averaged over all possible problems. Ensemble methods combine multiple models, through bagging, boosting, or stacking, to improve performance. scikit-learn is a widely used Python library for classical machine learning.

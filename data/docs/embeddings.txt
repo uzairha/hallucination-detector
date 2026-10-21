@@ -1,5 +1,27 @@
-Embeddings are dense numerical representations of data, typically text, in a continuous vector space. Each word, sentence, or document is mapped to a fixed-length array of floating-point numbers. These vectors capture semantic meaning so that similar concepts are located close together in the vector space.
+EMBEDDINGS: DEFINITION
 
-Text is converted to vectors by passing it through a neural network trained on large corpora. Models such as Word2Vec, GloVe, and sentence-transformers learn to produce vectors by predicting context words or by optimizing for semantic similarity on labeled datasets. The result is that the word "king" minus "man" plus "woman" produces a vector close to "queen."
+An embedding is a dense vector of real numbers that represents an item, such as a word, sentence, document, image, or user, so that similar items have nearby vectors. Embeddings are learned by a model rather than designed by hand. One-hot encoding is sparse and has as many dimensions as there are vocabulary items, and it encodes no similarity between items. Dense embeddings typically have hundreds to a few thousand dimensions. The individual dimensions of an embedding usually do not have human-interpretable meanings.
 
-The practical value of embeddings is that mathematical operations on vectors correspond to semantic relationships in language. Cosine similarity between two vectors measures how semantically related two pieces of text are. This property underpins semantic search, recommendation systems, and retrieval-augmented generation pipelines.
+EMBEDDINGS: WORD EMBEDDINGS
+
+Word2Vec was introduced by Tomas Mikolov and colleagues at Google in 2013. It has two training architectures: continuous bag-of-words (CBOW), which predicts a word from its context, and skip-gram, which predicts the context from a word. GloVe (Global Vectors), from Stanford in 2014, learns embeddings from global word co-occurrence statistics. FastText, from Facebook AI Research, represents words as bags of character n-grams, so it can build vectors for words not seen during training. The well-known analogy "king - man + woman ≈ queen" illustrates that linear relationships can appear in word embedding spaces, but such analogies do not hold reliably for all word pairs.
+
+Static word embeddings such as Word2Vec and GloVe assign each word a single vector regardless of context, so they cannot distinguish senses such as "bank" (river) and "bank" (finance). Contextual embeddings from models such as ELMo and BERT produce different vectors for the same word in different contexts.
+
+EMBEDDINGS: SENTENCE AND DOCUMENT EMBEDDINGS
+
+Sentence embeddings represent whole sentences or passages as single vectors. Sentence-BERT (SBERT), introduced by Reimers and Gurevych in 2019, fine-tunes BERT-style models with siamese networks so that sentence embeddings can be compared with cosine similarity. The sentence-transformers library implements SBERT-style models. all-MiniLM-L6-v2 is a small sentence-transformers model that produces 384-dimensional embeddings. Using the raw [CLS] token output or a simple average of BERT outputs without fine-tuning for similarity tends to give poor sentence embeddings.
+
+Embedding models are commonly trained with contrastive learning, which pulls embeddings of related pairs together and pushes unrelated pairs apart. Bi-encoders embed the query and the document separately, so document embeddings can be precomputed and searched efficiently. Cross-encoders process the query and document together and are usually more accurate at judging relevance but much slower, so they are often used to rerank a small set of candidates.
+
+Embeddings from different models live in different vector spaces and are not directly comparable. A query embedded with one model should not be searched against documents embedded with another. Changing the embedding model requires re-embedding the corpus.
+
+EMBEDDINGS: SIMILARITY MEASURES
+
+Cosine similarity measures the cosine of the angle between two vectors and ranges from -1 to 1. It ignores vector magnitude. The dot product depends on both direction and magnitude. Euclidean (L2) distance measures straight-line distance, where smaller means more similar. For unit-normalized vectors, cosine similarity equals the dot product, and ranking by Euclidean distance gives the same order as ranking by cosine similarity. A common mistake is mixing these measures: with L2 distance a lower score means more similar, while with cosine similarity a higher score means more similar.
+
+High cosine similarity indicates that two texts are semantically related or about the same topic. It does not indicate that a claim is true, or that two statements agree. A sentence and its negation, such as "transformers use recurrence" and "transformers do not use recurrence," can have very high embedding similarity. Semantic similarity is therefore not the same as factual entailment, which is why fact-checking systems pair retrieval with a separate verification step.
+
+EMBEDDINGS: LIMITATIONS
+
+Embedding models have a maximum input length in tokens, and text beyond that limit is truncated. This is one reason documents are split into chunks before embedding. Embeddings can encode biases present in their training data. Dimensionality reduction methods such as PCA, t-SNE, and UMAP are used to visualize embeddings in two or three dimensions, and these visualizations distort distances.

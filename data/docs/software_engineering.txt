@@ -1,0 +1,41 @@
+SOFTWARE ENGINEERING: DESIGN PRINCIPLES
+
+SOLID is a set of five object-oriented design principles popularized by Robert C. Martin. S is the Single Responsibility Principle: a class should have one reason to change. O is the Open/Closed Principle: software entities should be open for extension but closed for modification. L is the Liskov Substitution Principle, from Barbara Liskov: objects of a subtype should be usable anywhere the base type is expected without breaking correctness. I is the Interface Segregation Principle: clients should not be forced to depend on methods they do not use. D is the Dependency Inversion Principle: high-level modules should depend on abstractions, not on concrete low-level modules.
+
+DRY (Don't Repeat Yourself) comes from the book The Pragmatic Programmer. It is about not duplicating knowledge, not merely about avoiding similar-looking code. KISS stands for "keep it simple." YAGNI ("you aren't gonna need it") comes from Extreme Programming and advises against building features before they are needed.
+
+Coupling is the degree of dependency between modules. Cohesion is how closely related the responsibilities inside a single module are. Good designs aim for low coupling and high cohesion. Composition over inheritance is a guideline that favors building behavior by combining objects rather than relying on deep class hierarchies.
+
+SOFTWARE ENGINEERING: OBJECT-ORIENTED PROGRAMMING
+
+The four commonly cited pillars of object-oriented programming are encapsulation, abstraction, inheritance, and polymorphism. Encapsulation bundles data with the methods that operate on it and restricts direct access to internal state. Polymorphism lets a single interface work with objects of different types. Subtype polymorphism usually works through dynamic dispatch, also called method overriding. Method overloading, where several methods share a name but take different parameters, is resolved at compile time in languages such as Java and C++.
+
+SOFTWARE ENGINEERING: DESIGN PATTERNS
+
+The book Design Patterns: Elements of Reusable Object-Oriented Software, published in 1994 by Gamma, Helm, Johnson, and Vlissides (the "Gang of Four"), catalogs 23 patterns in three groups: creational, structural, and behavioral. Creational patterns include Singleton, Factory Method, Abstract Factory, Builder, and Prototype. Structural patterns include Adapter, Decorator, Facade, Proxy, Composite, Bridge, and Flyweight. Behavioral patterns include Observer, Strategy, Command, Iterator, State, Template Method, Visitor, Chain of Responsibility, Mediator, Memento, and Interpreter. Model-View-Controller (MVC) is an architectural pattern that predates the Gang of Four book. It is not one of the 23 patterns.
+
+The Singleton pattern is often criticized because it introduces global state and makes testing harder. Dependency injection supplies an object's dependencies from outside instead of having the object construct them, which improves testability.
+
+SOFTWARE ENGINEERING: DEVELOPMENT PROCESSES
+
+The Agile Manifesto was published in 2001. It values individuals and interactions over processes and tools, working software over comprehensive documentation, customer collaboration over contract negotiation, and responding to change over following a plan. Scrum is an Agile framework with fixed-length iterations called sprints, typically one to four weeks long, and the roles of Product Owner, Scrum Master, and Developers. Scrum events include sprint planning, the daily scrum, the sprint review, and the sprint retrospective. Kanban visualizes work on a board and limits work in progress, and it does not require fixed iterations. The waterfall model runs requirements, design, implementation, verification, and maintenance as sequential phases.
+
+SOFTWARE ENGINEERING: ARCHITECTURE
+
+A monolith deploys an application as a single unit. Microservices split an application into independently deployable services that communicate over a network. Microservices allow independent scaling and deployment, but they add complexity in networking, data consistency, observability, and operations. A common misconception is that microservices are always better than a monolith. For small teams and early-stage products, a well-structured monolith is often simpler.
+
+REST (Representational State Transfer) is an architectural style described by Roy Fielding in his 2000 doctoral dissertation. Its constraints include client-server separation, statelessness, cacheability, a uniform interface, and a layered system. REST is not a protocol, and using JSON over HTTP does not by itself make an API RESTful. GraphQL is a query language for APIs in which clients specify exactly which fields they need. gRPC is a remote procedure call framework that uses HTTP/2 and Protocol Buffers.
+
+Semantic Versioning (SemVer) uses MAJOR.MINOR.PATCH. Increment MAJOR for incompatible API changes, MINOR for backward-compatible new functionality, and PATCH for backward-compatible bug fixes. Version 0.y.z is for initial development, and its public API should not be considered stable.
+
+Technical debt describes the future cost of choosing an expedient solution now instead of a better one. The term was coined by Ward Cunningham. Refactoring changes a program's internal structure without changing its external behavior, and it relies on tests to confirm that behavior is preserved.
+
+SOFTWARE ENGINEERING: PROGRAMMING LANGUAGE CONCEPTS
+
+A compiled language is translated to machine code or bytecode before execution, while an interpreted language is executed by an interpreter. Whether code is compiled or interpreted is a property of the implementation, not of the language itself. CPython, for example, compiles Python source to bytecode and then interprets the bytecode. Java compiles to bytecode that runs on the Java Virtual Machine (JVM), which uses just-in-time (JIT) compilation. Static typing checks types at compile time, and dynamic typing checks them at runtime. Strong versus weak typing is a separate, informal distinction about how readily a language performs implicit type conversions. Python is dynamically and strongly typed. JavaScript is dynamically and weakly typed. Java is statically typed.
+
+JavaScript and Java are unrelated languages despite the similar names. JavaScript is standardized as ECMAScript by Ecma International in the ECMA-262 specification.
+
+Pass-by-value copies the value into the function. Pass-by-reference passes a reference to the caller's variable. Java is always pass-by-value. For objects, the value that is passed is a copy of the reference. Python passes object references by value, a model often called call-by-sharing.
+
+Immutable objects cannot be changed after creation. In Python, strings, tuples, and frozensets are immutable, while lists, dictionaries, and sets are mutable. A pure function has no side effects and always returns the same output for the same input.

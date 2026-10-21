@@ -1,5 +1,27 @@
-Vector databases are storage systems designed to index and search high-dimensional vectors efficiently. Unlike traditional relational databases that search by exact match, vector databases retrieve the nearest neighbors to a query vector using approximate nearest neighbor algorithms.
+VECTOR DATABASES: PURPOSE
 
-Similarity search works by computing a distance metric, most commonly cosine similarity or Euclidean distance, between the query vector and all stored vectors. Because computing this over millions of vectors naively is slow, vector databases use indexing structures such as HNSW or inverted file indexes to reduce the search space.
+A vector database stores vector embeddings and supports similarity search, which means finding the vectors closest to a query vector under a distance or similarity measure. Vector databases typically also store metadata, support filtering, and handle inserts, updates, and deletes. Examples of dedicated vector databases include Pinecone, Weaviate, Milvus, Qdrant, and Chroma. pgvector is an extension that adds vector types and similarity search to PostgreSQL. Elasticsearch and OpenSearch also support vector search.
 
-FAISS, developed by Meta AI Research, is one of the most widely used vector similarity search libraries. It supports both exact and approximate search and runs efficiently on CPUs and GPUs. Other popular vector databases include Pinecone, Weaviate, and Chroma, which add persistence, filtering, and cloud hosting on top of similar search functionality.
+FAISS (Facebook AI Similarity Search) is a library from Meta AI for efficient similarity search and clustering of dense vectors. FAISS is a library rather than a database server. It does not by itself provide a network API, user management, or durable storage, although indexes can be saved to and loaded from files.
+
+VECTOR DATABASES: EXACT AND APPROXIMATE SEARCH
+
+Exact k-nearest-neighbor search compares the query against every stored vector, which takes O(n · d) time for n vectors of dimension d. It returns the exact nearest neighbors but is slow for large collections. In FAISS, IndexFlatL2 and IndexFlatIP perform exact brute-force search using Euclidean distance and inner product, respectively. With IndexFlatL2, lower scores mean closer vectors. With IndexFlatIP, higher scores mean more similar vectors. To use cosine similarity with an inner-product index, the vectors must first be L2-normalized to unit length.
+
+Approximate nearest neighbor (ANN) search trades a small loss of accuracy for much faster queries. It is the standard approach for large collections. ANN results are not guaranteed to be the exact nearest neighbors. Recall, meaning the fraction of true nearest neighbors returned, is the usual measure of ANN quality, and index parameters trade recall against speed and memory.
+
+VECTOR DATABASES: INDEX TYPES
+
+HNSW (Hierarchical Navigable Small World), introduced by Malkov and Yashunin, builds a multi-layer proximity graph and searches it greedily from coarse upper layers to finer lower layers. HNSW offers high recall and fast queries but uses significant memory. Its main parameters are M, the number of connections per node; efConstruction, the candidate list size used when building; and efSearch, the candidate list size used at query time. Increasing efSearch raises recall and slows queries.
+
+IVF (inverted file) indexes cluster the vectors using k-means into nlist partitions and search only the nprobe partitions closest to the query. Increasing nprobe raises recall and slows search. IVF indexes require a training step to learn the cluster centroids.
+
+Product quantization (PQ) compresses vectors by splitting them into subvectors and encoding each one with a small codebook. This greatly reduces memory use at some cost in accuracy. IVF and PQ are often combined, as in FAISS's IVFPQ index. Scalar quantization and binary quantization are simpler compression methods. Locality-sensitive hashing (LSH) is an older ANN approach that hashes similar vectors into the same buckets with high probability.
+
+VECTOR DATABASES: OPERATIONAL CONSIDERATIONS
+
+The distance metric used for search should match the one the embedding model was trained with, typically cosine similarity or dot product for sentence embedding models. All vectors in an index must have the same dimensionality, which is fixed by the embedding model. Some ANN index types handle deletions and updates less efficiently than inserts, and they may need periodic rebuilding. Filtering on metadata can be applied before, during, or after the vector search, and post-filtering can return fewer than k results.
+
+A common misconception is that a vector database is required for every retrieval system. Small collections can be searched exactly in memory with a library such as FAISS or NumPy, and a dedicated vector database becomes useful for large scale, persistence, concurrent access, and filtering. Another misconception is that vector similarity search can replace keyword search entirely. Exact identifiers, product codes, and rare terms are often handled better by lexical search, which is why hybrid search is common.
+
+Vector databases do not understand meaning themselves. The quality of semantic search depends on the embedding model that produced the vectors, and the database only computes distances between them.

@@ -1,0 +1,35 @@
+AI SAFETY: SCOPE
+
+AI safety covers the technical and organizational work of making AI systems behave as intended and avoid causing harm. It includes robustness, alignment, interpretability, evaluation, security, and governance. AI alignment is the problem of making a system's goals and behavior match the intentions and values of its designers and users. AI ethics overlaps with AI safety and focuses on fairness, accountability, transparency, and societal impact.
+
+AI SAFETY: ALIGNMENT PROBLEMS
+
+Specification gaming, also called reward hacking, occurs when a system optimizes the literal objective it was given in an unintended way that satisfies the metric but not the designer's intent. Goodhart's law, often paraphrased as "when a measure becomes a target, it ceases to be a good measure," describes this dynamic. Outer alignment concerns whether the specified objective captures what we actually want. Inner alignment concerns whether the learned model actually pursues that objective rather than some other goal that happened to work during training. Goal misgeneralization occurs when a model keeps its capabilities in a new situation but pursues an unintended goal.
+
+Sycophancy is a tendency of language models to agree with the user or tell users what they want to hear, even when it is incorrect. Training on human approval can reinforce it. Deceptive alignment is a hypothesized failure mode in which a model behaves well during training or evaluation while pursuing different goals in deployment.
+
+AI SAFETY: TRAINING-TIME TECHNIQUES
+
+Reinforcement learning from human feedback (RLHF) trains models toward human-preferred behavior using a reward model learned from human comparisons. RLHF improves helpfulness and harmlessness but does not guarantee truthfulness, and it can introduce sycophancy. Constitutional AI, introduced by Anthropic in 2022, trains models using a written set of principles and AI-generated feedback. Red teaming means deliberately probing a system for harmful or unintended behavior before and after deployment.
+
+Interpretability research tries to understand the internal computations of models. Mechanistic interpretability studies circuits and features inside neural networks. Model cards, introduced by Mitchell et al. in 2019, document a model's intended uses, evaluation results, and limitations. Datasheets for datasets document how a dataset was created and what it contains.
+
+AI SAFETY: SECURITY OF AI SYSTEMS
+
+Prompt injection is an attack in which input text manipulates a language model into ignoring its instructions or taking unintended actions. Direct prompt injection comes from the user's own input. Indirect prompt injection is hidden in external content the model processes, such as web pages, emails, or retrieved documents. Jailbreaking uses crafted prompts to bypass a model's safety guidelines. Prompt injection has no complete solution. Mitigations include separating trusted instructions from untrusted data, limiting the tools and permissions available to the model, requiring human approval for consequential actions, and filtering inputs and outputs.
+
+Data poisoning manipulates training or fine-tuning data to change a model's behavior, including inserting backdoors that trigger on specific inputs. Adversarial examples are inputs with small, often imperceptible perturbations that cause misclassification. Model extraction attempts to replicate a model by querying it. Membership inference attacks try to determine whether a specific record was in the training data. Training data extraction attacks have shown that language models can memorize and reproduce verbatim pieces of their training data.
+
+The OWASP Top 10 for Large Language Model Applications, 2025 edition, lists: LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Supply Chain, LLM04 Data and Model Poisoning, LLM05 Improper Output Handling, LLM06 Excessive Agency, LLM07 System Prompt Leakage, LLM08 Vector and Embedding Weaknesses, LLM09 Misinformation, and LLM10 Unbounded Consumption. Improper output handling covers passing model output to other systems without validation, which can lead to cross-site scripting, SQL injection, or command execution. Excessive agency covers granting a model more functionality, permissions, or autonomy than it needs. MITRE ATLAS is a knowledge base of adversary tactics and techniques against AI systems, modeled on MITRE ATT&CK.
+
+AI SAFETY: FAIRNESS AND BIAS
+
+Models can learn and amplify biases present in their training data. Fairness has several formal definitions, such as demographic parity, equalized odds, and calibration within groups. Several of these definitions cannot all be satisfied at the same time except in special cases, as shown by impossibility results from Kleinberg et al. and Chouldechova. Removing a sensitive attribute from the input does not guarantee fairness, because other features can act as proxies for it.
+
+AI SAFETY: GOVERNANCE AND FRAMEWORKS
+
+The NIST AI Risk Management Framework (AI RMF 1.0), released in January 2023, is voluntary guidance organized into four functions: Govern, Map, Measure, and Manage. NIST AI 600-1, published in July 2024, is a Generative AI Profile of the AI RMF. It lists risks specific to or worsened by generative AI, including confabulation, which is NIST's term for hallucination. The EU AI Act, which entered into force in August 2024, takes a risk-based approach. It prohibits certain unacceptable-risk practices, places strict requirements on high-risk systems, imposes transparency obligations on some systems, and has specific obligations for general-purpose AI models. Its obligations apply in stages over several years. ISO/IEC 42001, published in 2023, specifies requirements for an AI management system.
+
+AI SAFETY: EVALUATION AND OVERSIGHT
+
+Evaluations test models for dangerous capabilities, harmful outputs, bias, robustness, and truthfulness. TruthfulQA is a benchmark that measures whether models reproduce common human misconceptions. Benchmark results can be inflated if test data leaked into training data. Human oversight means keeping humans able to monitor, intervene in, and override AI systems, especially for high-stakes decisions. An AI system's confident tone is not evidence that its output is correct, and outputs used for consequential decisions should be verified against reliable sources.

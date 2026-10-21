@@ -1,0 +1,33 @@
+RETRIEVAL-AUGMENTED GENERATION: DEFINITION
+
+Retrieval-augmented generation (RAG) combines a retrieval step with a generative language model. Relevant documents are retrieved from an external knowledge source and inserted into the model's context so the model can ground its answer in them. The term was introduced in the 2020 paper "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" by Lewis et al. at Facebook AI Research. RAG lets a system use up-to-date or private information without retraining the model, and it makes it possible to cite sources.
+
+RAG: PIPELINE
+
+A typical RAG pipeline has an indexing phase and a query phase. In the indexing phase, documents are loaded, split into chunks, converted into embeddings, and stored in a vector index along with metadata. In the query phase, the user's query is embedded, the most similar chunks are retrieved, optionally reranked, and inserted into a prompt. The language model then generates an answer conditioned on that context.
+
+RAG: CHUNKING
+
+Chunking splits documents into smaller passages before embedding. Common strategies include fixed-size chunks with overlap, splitting on sentences or paragraphs, recursive splitting on document structure, and semantic chunking. Overlap between consecutive chunks reduces the chance that a relevant fact is split across a chunk boundary. Chunks that are too large dilute the embedding with unrelated content and use more of the context window. Chunks that are too small lose context. Chunk size is commonly measured in tokens or words.
+
+RAG: RETRIEVAL METHODS
+
+Dense retrieval uses embeddings and similarity search. Sparse or lexical retrieval uses term-matching methods such as TF-IDF and BM25. BM25 is a ranking function based on term frequency, inverse document frequency, and document length normalization. Lexical retrieval is strong for exact terms, names, codes, and rare words. Dense retrieval is strong for paraphrases and semantic matches. Hybrid search combines both, for example with reciprocal rank fusion. Reranking applies a more accurate but slower model, often a cross-encoder, to reorder the top retrieved candidates.
+
+The top-k parameter controls how many chunks are retrieved. Retrieving more chunks increases recall but adds noise and cost. Query rewriting, multi-query retrieval, and HyDE (hypothetical document embeddings) are techniques for improving retrieval when the user's query wording differs from the document wording. Metadata filtering restricts retrieval by attributes such as source, date, or access permissions.
+
+RAG: EVALUATION
+
+RAG systems are evaluated on retrieval quality and generation quality separately. Retrieval metrics include recall@k, precision@k, mean reciprocal rank (MRR), and normalized discounted cumulative gain (nDCG). Generation is assessed for faithfulness (also called groundedness), meaning whether the answer is supported by the retrieved context, and for answer relevance, meaning whether it addresses the question. Faithfulness to the retrieved context is different from factual correctness, because the retrieved context itself can be wrong or outdated. Frameworks such as RAGAS provide automated RAG evaluation metrics, often using an LLM as a judge.
+
+RAG: FAILURE MODES AND MISCONCEPTIONS
+
+RAG reduces hallucinations but does not eliminate them. Failure modes include retrieving irrelevant or incomplete chunks, missing relevant documents, the model ignoring or contradicting the retrieved context, the model adding unsupported details beyond the context, and conflicts between the model's training knowledge and the retrieved text. If the knowledge base does not contain the answer, a well-designed system should say so rather than guess.
+
+RAG and fine-tuning solve different problems. RAG supplies knowledge at inference time and is easy to update by changing the documents. Fine-tuning changes model weights and is better suited to teaching a format, style, or task behavior than to adding frequently changing facts. A long context window does not make retrieval unnecessary, because putting everything in context increases cost and latency and can reduce accuracy, as with the lost-in-the-middle effect.
+
+Retrieved documents are untrusted input. Text inside a retrieved document can contain instructions that attempt to manipulate the model, which is called indirect prompt injection. RAG systems should treat retrieved content as data, enforce access controls so users only retrieve documents they are allowed to see, and escape model output before rendering it in web pages.
+
+RAG: CLAIM VERIFICATION
+
+A fact-checking or hallucination detection pipeline built on RAG typically extracts individual factual claims from a generated answer, retrieves evidence for each claim, and asks a verifier to label each claim as supported, contradicted or unsupported, or not enough information. This framing follows fact-verification datasets such as FEVER, which labels claims as Supported, Refuted, or NotEnoughInfo. Natural language inference (NLI) models, which classify entailment, contradiction, or neutral, can also verify claims against evidence. Retrieval similarity alone is not a verdict, because a passage can be on-topic yet contradict the claim.

@@ -1,0 +1,41 @@
+DATABASES: RELATIONAL MODEL AND SQL
+
+The relational model was introduced by Edgar F. Codd in 1970. A relational database stores data in tables, also called relations, made of rows (tuples) and columns (attributes). A primary key uniquely identifies each row and cannot be NULL. A foreign key references a primary or unique key in another table and enforces referential integrity.
+
+SQL is a declarative language: a query describes what result is wanted, and the database's query planner decides how to compute it. SQL is standardized by ISO/IEC 9075, but database systems implement different subsets and add their own extensions.
+
+In SQL, NULL represents a missing or unknown value. NULL is not equal to anything, including another NULL, so the comparison NULL = NULL does not evaluate to true. Tests for NULL use IS NULL and IS NOT NULL. Most aggregate functions, such as SUM and AVG, ignore NULL values. COUNT(*) counts all rows, while COUNT(column) counts only rows where that column is not NULL.
+
+WHERE filters rows before grouping and aggregation. HAVING filters groups after aggregation. An INNER JOIN returns only rows with matches in both tables. A LEFT OUTER JOIN returns all rows from the left table, with NULLs where the right table has no match. A CROSS JOIN returns the Cartesian product of the two tables. UNION removes duplicate rows, while UNION ALL keeps them.
+
+DATABASES: TRANSACTIONS AND ACID
+
+A transaction is a unit of work that either commits as a whole or is rolled back. ACID stands for atomicity, consistency, isolation, and durability. Atomicity means all of a transaction's changes are applied or none are. Consistency means a transaction moves the database from one valid state to another while preserving its constraints. Isolation controls how concurrent transactions see each other's changes. Durability means committed changes survive crashes, usually by means of a write-ahead log.
+
+The SQL standard defines four isolation levels: read uncommitted, read committed, repeatable read, and serializable. They are defined by which anomalies they prevent: dirty reads, non-repeatable reads, and phantom reads. Serializable is the strongest level. PostgreSQL's default isolation level is read committed, and MySQL InnoDB's default is repeatable read. Many databases use multiversion concurrency control (MVCC), in which readers see a snapshot and do not block writers.
+
+DATABASES: NORMALIZATION
+
+Normalization organizes tables to reduce redundancy and update anomalies. First normal form (1NF) requires atomic column values and no repeating groups. Second normal form (2NF) removes partial dependencies on part of a composite key. Third normal form (3NF) removes transitive dependencies, where a non-key attribute depends on another non-key attribute. Boyce-Codd normal form (BCNF) is a stricter version of 3NF. Denormalization intentionally adds redundancy to speed up reads, at the cost of more complex writes and possible inconsistency.
+
+DATABASES: INDEXES AND QUERY PERFORMANCE
+
+An index is a separate data structure that speeds up lookups at the cost of extra storage and slower writes, because the index must be updated on every insert, update, and delete. B-tree indexes, the default in PostgreSQL and MySQL InnoDB, support equality and range queries. Hash indexes support only equality lookups. A composite index on columns (a, b) can serve queries that filter on a alone or on a and b together, but generally not on b alone. This is the leftmost-prefix rule.
+
+A common misconception is that adding more indexes always makes a database faster. Indexes slow down writes and use storage, and the query planner may skip an index when a full scan is cheaper, for example on small tables or on queries that match a large fraction of rows. The EXPLAIN command shows the planner's chosen execution plan.
+
+The N+1 query problem occurs when code runs one query to get a list of items and then one more query for each item. It is commonly caused by lazy loading in ORMs and is fixed with joins or batched loading.
+
+DATABASES: NOSQL AND DISTRIBUTED DATA
+
+NoSQL is a broad term for non-relational databases. Document stores, such as MongoDB, store JSON-like documents. Key-value stores, such as Redis and Amazon DynamoDB, look up values by key. Wide-column stores, such as Apache Cassandra, organize data into column families. Graph databases, such as Neo4j, store nodes and relationships. A common misconception is that NoSQL databases never support transactions or schemas. MongoDB, for example, supports multi-document ACID transactions and schema validation.
+
+The CAP theorem, conjectured by Eric Brewer and proven by Gilbert and Lynch in 2002, states that a distributed data store cannot guarantee consistency, availability, and partition tolerance all at once during a network partition. A common misconception is "pick any two of three." Network partitions cannot be ruled out in a distributed system, so the real choice is between consistency and availability while a partition is happening. In the CAP theorem, consistency means linearizability, which is different from the C in ACID.
+
+BASE stands for basically available, soft state, eventual consistency, and describes many distributed NoSQL designs. Eventual consistency guarantees that if no new updates are made, all replicas eventually converge to the same value.
+
+Replication copies data across nodes for availability and read scaling. Sharding, also called horizontal partitioning, splits data across nodes by a shard key to scale writes and storage. Vertical scaling adds resources to a single machine, while horizontal scaling adds more machines.
+
+Redis is an in-memory data store that supports strings, hashes, lists, sets, sorted sets, and streams. It can persist data to disk using RDB snapshots and an append-only file (AOF). It executes commands on a single main thread, although newer versions use additional threads for network I/O.
+
+OLTP (online transaction processing) systems handle many short read and write transactions. OLAP (online analytical processing) systems handle complex analytical queries over large datasets and often use columnar storage. A data warehouse stores structured data that has been modeled for analysis. A data lake stores raw data in many formats.

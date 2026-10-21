@@ -1,0 +1,37 @@
+GIT: CORE CONCEPTS
+
+Git is a distributed version control system created by Linus Torvalds in 2005 for Linux kernel development. Git and GitHub are different things. Git is the version control tool. GitHub, GitLab, and Bitbucket are hosting services built around Git. In Git, every clone contains the full repository history.
+
+Git stores data as objects: blobs (file contents), trees (directories), commits, and annotated tags. Objects are identified by a hash of their content, traditionally SHA-1. Git also supports SHA-256 repositories. A commit records a snapshot of the whole project tree plus metadata and one or more parent commits. A common misconception is that Git stores each commit as a diff. Git stores snapshots and compresses similar objects in packfiles using delta compression.
+
+The working directory holds your current files. The staging area, also called the index, holds changes prepared for the next commit. The repository holds committed history. git add moves changes into the staging area, and git commit records the staged snapshot.
+
+A branch in Git is a lightweight movable pointer to a commit. HEAD normally points to the current branch. A detached HEAD state happens when HEAD points directly to a commit instead of a branch.
+
+GIT: COMMON COMMANDS
+
+git fetch downloads commits and references from a remote without changing local branches or the working directory. git pull runs a fetch followed by a merge, or a rebase if configured. git push uploads local commits to a remote. git clone copies a repository, including its full history. origin is the conventional default name for the remote a repository was cloned from. It is not a special keyword.
+
+git merge combines histories and can create a merge commit with two parents. A fast-forward merge moves the branch pointer forward when there are no divergent commits. git rebase replays commits on top of another base, creating new commits with new hashes and a linear history. Rebasing commits that have already been pushed and shared with others rewrites history and can cause problems for collaborators. git cherry-pick applies the changes from a specific commit onto the current branch.
+
+git revert creates a new commit that undoes an earlier commit, which is safe for shared history. git reset moves the current branch pointer. With --soft it keeps changes staged, with --mixed (the default) it keeps changes in the working directory but unstaged, and with --hard it discards changes in both the index and the working tree. git stash temporarily shelves uncommitted changes. git reflog records where HEAD and branch tips have pointed, which helps recover commits after a reset.
+
+A .gitignore file only affects untracked files. Files that are already tracked stay tracked until they are removed from the index with git rm --cached. Removing a secret in a later commit does not remove it from history, so a leaked credential must be rotated, and rewriting history requires tools such as git filter-repo.
+
+GIT: WORKFLOWS
+
+A pull request (GitHub, Bitbucket) or merge request (GitLab) is a hosting-platform feature for proposing and reviewing changes. It is not a core Git command. Trunk-based development has developers integrate small changes into a single main branch frequently. Git Flow uses long-lived develop and main branches plus feature, release, and hotfix branches. GitHub Flow uses short-lived feature branches merged into main through pull requests.
+
+CI/CD: CONTINUOUS INTEGRATION AND DELIVERY
+
+Continuous integration (CI) is the practice of merging code changes into a shared mainline frequently, with each change verified by an automated build and tests. Continuous delivery means the software is always in a releasable state and can be deployed to production at any time, usually with a manual approval step. Continuous deployment goes further and automatically deploys every change that passes the pipeline to production, with no manual approval. Continuous delivery and continuous deployment are different practices that are both abbreviated CD.
+
+A CI/CD pipeline is a series of automated stages, such as build, test, static analysis, packaging, and deployment. A build artifact is an output of the pipeline, such as a compiled binary or container image, that is promoted through environments. Building once and deploying the same artifact to every environment avoids differences between environments.
+
+GitHub Actions workflows are defined in YAML files in the .github/workflows directory. A workflow contains jobs, jobs contain steps, and jobs run on runners. GitLab CI is configured in a .gitlab-ci.yml file. Jenkins pipelines are usually defined in a Jenkinsfile. Secrets used in pipelines should be stored in the platform's secret store, not in the repository.
+
+CI/CD: DEPLOYMENT STRATEGIES
+
+A blue-green deployment runs two identical environments and switches traffic from the old (blue) environment to the new (green) one, which allows quick rollback. A canary release sends a small percentage of traffic to the new version first and increases it gradually while monitoring. A rolling deployment replaces instances gradually. Feature flags decouple deploying code from releasing features by turning functionality on or off at runtime.
+
+DORA metrics measure software delivery performance. The four original metrics are deployment frequency, lead time for changes, change failure rate, and time to restore service.

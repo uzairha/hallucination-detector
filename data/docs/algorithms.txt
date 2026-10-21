@@ -1,13 +1,49 @@
-Binary search finds a target value in a sorted array by repeatedly halving the search interval. It compares the target to the middle element and eliminates the half where the target cannot exist. Binary search runs in O(log n) time and O(1) space, making it far more efficient than linear search for large sorted datasets.
+ALGORITHMS: ASYMPTOTIC ANALYSIS
 
-Merge sort is a divide-and-conquer sorting algorithm that splits an array into halves, recursively sorts each half, and merges the sorted halves back together. It runs in O(n log n) time in all cases and uses O(n) auxiliary space. Merge sort is stable, meaning equal elements preserve their original relative order.
+Big O notation gives an asymptotic upper bound on the growth of a function. Big Omega gives an asymptotic lower bound, and Big Theta gives a tight bound, meaning both an upper and a lower bound. A common misconception is that Big O means "worst case." Big O is a bound on a function, and it can describe the worst case, the average case, or the best case of an algorithm. Worst-case, average-case, and best-case analysis are separate questions from which asymptotic notation is used.
 
-Quicksort selects a pivot element and partitions the array into elements less than and greater than the pivot, then recursively sorts each partition. Its average-case time complexity is O(n log n), but its worst case is O(n²) when the pivot is consistently the smallest or largest element. In-place variants use O(log n) stack space.
+Constant factors and lower-order terms are dropped in asymptotic notation, so 3n^2 + 5n + 7 is Theta(n^2). An algorithm with a better asymptotic bound is not always faster in practice for small inputs, because constant factors, memory access patterns, and cache behavior matter. Amortized analysis gives the average cost per operation over a worst-case sequence of operations. Amortized cost is not the same as average-case cost over random inputs.
 
-Dijkstra's algorithm finds the shortest path from a source node to all other nodes in a weighted graph with non-negative edge weights. It uses a priority queue to greedily expand the nearest unvisited node. The time complexity is O((V + E) log V) with a binary heap, where V is the number of vertices and E is the number of edges.
+The common growth classes in increasing order are constant O(1), logarithmic O(log n), linear O(n), linearithmic O(n log n), quadratic O(n^2), cubic O(n^3), exponential O(2^n), and factorial O(n!). In asymptotic notation the base of a logarithm does not matter, because logarithms with different bases differ only by a constant factor.
 
-Breadth-first search (BFS) explores a graph level by level, visiting all neighbors of a node before moving to the next depth. It uses a queue and runs in O(V + E) time. BFS finds the shortest path in an unweighted graph and is used for cycle detection and connected component discovery.
+ALGORITHMS: SEARCHING
 
-Dynamic programming solves problems by breaking them into overlapping subproblems and storing their results to avoid redundant computation. It applies when a problem has optimal substructure and overlapping subproblems. Classic examples include the Fibonacci sequence, the 0/1 knapsack problem, and longest common subsequence.
+Linear search checks elements one by one and runs in O(n) time. It works on unsorted data. Binary search requires the data to be sorted and to support random access. It halves the search range on each step and runs in O(log n) time. Binary search on a linked list is not efficient, because reaching the middle element takes linear time. A classic bug in binary search is integer overflow when the midpoint is computed as (low + high) / 2 in fixed-width integer languages. Computing low + (high - low) / 2 avoids it.
 
-A greedy algorithm makes the locally optimal choice at each step with the hope of reaching a global optimum. Greedy algorithms do not always produce optimal solutions but work correctly for problems like Huffman coding, activity selection, and Kruskal's minimum spanning tree algorithm.
+ALGORITHMS: SORTING
+
+Comparison-based sorting has a lower bound of Omega(n log n) comparisons in the worst case. Non-comparison sorts such as counting sort, radix sort, and bucket sort can run in linear time only under assumptions about the keys, such as a bounded integer range.
+
+Merge sort runs in O(n log n) time in the best, average, and worst cases. It is stable, and it typically needs O(n) extra space for arrays. Quicksort runs in O(n log n) time on average but O(n^2) in the worst case, for example when a naive pivot choice is applied to already-sorted input. Quicksort is usually not stable, and it uses O(log n) stack space on average. Heapsort runs in O(n log n) time in all cases, sorts in place with O(1) extra space, and is not stable.
+
+Insertion sort runs in O(n^2) time in the worst case but O(n) time on already-sorted or nearly-sorted input. It is stable and works well on small arrays, which is why hybrid sorts use it for small partitions. Bubble sort and selection sort run in O(n^2) time. Selection sort makes O(n) swaps and is not stable in its usual array form.
+
+Timsort is a hybrid of merge sort and insertion sort. It is stable and is the standard sort in CPython and in Java for object arrays. Introsort starts with quicksort, switches to heapsort when recursion gets too deep, and uses insertion sort for small ranges, which guarantees O(n log n) worst-case time.
+
+A stable sort keeps the relative order of elements with equal keys. An in-place sort uses only O(1) or O(log n) extra memory beyond the input.
+
+ALGORITHMS: GRAPH ALGORITHMS
+
+Breadth-first search (BFS) and depth-first search (DFS) both run in O(V + E) time on an adjacency-list representation. BFS finds shortest paths, measured in number of edges, in unweighted graphs. DFS does not guarantee shortest paths. DFS is used for topological sorting, cycle detection, and finding strongly connected components.
+
+Dijkstra's algorithm finds single-source shortest paths in graphs with non-negative edge weights. With a binary heap it runs in O((V + E) log V) time. Dijkstra's algorithm does not work correctly when there are negative edge weights. The Bellman-Ford algorithm handles negative edge weights, runs in O(VE) time, and can detect negative-weight cycles reachable from the source. The Floyd-Warshall algorithm computes all-pairs shortest paths in O(V^3) time. A* search uses a heuristic, and it is guaranteed to find an optimal path when the heuristic is admissible, meaning it never overestimates the true remaining cost.
+
+A topological sort exists only for a directed acyclic graph (DAG). Kahn's algorithm and DFS-based methods both compute one in O(V + E) time.
+
+A minimum spanning tree connects all vertices of a connected, undirected, weighted graph with minimum total edge weight. Kruskal's algorithm sorts the edges and uses a union-find structure. Prim's algorithm grows a tree from a starting vertex using a priority queue. Both run in O(E log V) time with standard implementations.
+
+ALGORITHMS: DESIGN TECHNIQUES
+
+Divide and conquer splits a problem into independent subproblems, solves them recursively, and combines the results. Merge sort and quicksort are examples. The master theorem gives asymptotic solutions for recurrences of the form T(n) = aT(n/b) + f(n).
+
+Dynamic programming applies when a problem has overlapping subproblems and optimal substructure. It stores solutions to subproblems, either top-down with memoization or bottom-up with tabulation. Dynamic programming differs from divide and conquer in that its subproblems overlap.
+
+A greedy algorithm makes the locally best choice at each step. A greedy algorithm produces an optimal solution only for problems with the greedy-choice property and optimal substructure. Activity selection and Huffman coding are classic correct greedy algorithms. The greedy approach fails on general 0/1 knapsack, which is usually solved with dynamic programming in pseudo-polynomial time.
+
+Backtracking builds candidate solutions incrementally and abandons a partial candidate as soon as it cannot lead to a valid solution.
+
+ALGORITHMS: COMPLEXITY CLASSES
+
+P is the class of decision problems solvable in polynomial time by a deterministic algorithm. NP is the class of decision problems whose solutions can be verified in polynomial time. Every problem in P is also in NP. Whether P equals NP is an unsolved problem. A common misconception is that NP stands for "non-polynomial." NP stands for "nondeterministic polynomial time."
+
+A problem is NP-hard if every problem in NP can be reduced to it in polynomial time. A problem is NP-complete if it is both NP-hard and in NP. Boolean satisfiability (SAT) was the first problem proven NP-complete, by the Cook-Levin theorem. The decision version of the traveling salesman problem, graph coloring with three or more colors, and subset sum are NP-complete. The halting problem is undecidable, which means no algorithm can solve it for all inputs. It is NP-hard but not in NP.
