@@ -22,8 +22,8 @@ pip install -r requirements.txt
 # Add your OpenAI API key
 echo "OPENAI_API_KEY=sk-..." > .env
 
-# Build the FAISS index (first run)
-python -c "from utils.embedder import build_index; build_index()"
+# Build the FAISS index (first run, or after changing data/docs/)
+python build_index.py
 
 # Run the app
 streamlit run app.py
@@ -34,6 +34,7 @@ streamlit run app.py
 ```
 hallucination-detector/
 ├── app.py                  # Streamlit UI
+├── build_index.py          # Rebuilds the FAISS index from data/docs/
 ├── utils/
 │   ├── loader.py           # Reads .txt files from data/docs/
 │   ├── chunker.py          # Splits docs into overlapping word chunks
