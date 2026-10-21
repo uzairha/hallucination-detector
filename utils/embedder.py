@@ -2,6 +2,7 @@ import os
 import json
 import numpy as np
 import faiss
+from functools import lru_cache
 from sentence_transformers import SentenceTransformer
 from typing import List, Dict
 
@@ -9,8 +10,14 @@ from typing import List, Dict
 INDEX_PATH = "data/index.faiss"
 CHUNKS_PATH = "data/chunks.json"
 
-# Load the embedding model once (downloads on first run, cached after)
-model = SentenceTransformer("all-MiniLM-L6-v2")
+
+@lru_cache(maxsize=1)
+def get_model() -> SentenceTransformer:
+    """
+    Loads the embedding model on first use (downloads on first run, cached after).
+    Lazy so that importing this module doesn't load the model.
+    """
+    return SentenceTransformer("all-MiniLM-L6-v2")
 
 
 def build_index(chunks: List[Dict[str, str]]) -> None:
@@ -21,14 +28,15 @@ def build_index(chunks: List[Dict[str, str]]) -> None:
     texts = [chunk["text"] for chunk in chunks]
 
     print("Embedding chunks... (this may take a moment on first run)")
-    embeddings = model.encode(texts, show_progress_bar=True)
+    # Normalize to unit length so inner product == cosine similarity
+    embeddings = get_model().encode(texts, show_progress_bar=True, normalize_embeddings=True)
 
     # FAISS expects float32 arrays
     embeddings = np.array(embeddings).astype("float32")
 
-    # Create a flat (exact search) FAISS index using cosine-like L2 distance
+    # Flat (exact search) inner-product index; on unit vectors this is cosine similarity
     dimension = embeddings.shape[1]
-    index = faiss.IndexFlatL2(dimension)
+    index = faiss.IndexFlatIP(dimension)
     index.add(embeddings)
 
     # Save the FAISS index to disk
@@ -47,7 +55,7 @@ def load_index():
     Returns (index, chunks).
     """
     if not os.path.exists(INDEX_PATH) or not os.path.exists(CHUNKS_PATH):
-        raise FileNotFoundError("Index not found. Run build_index() first.")
+        raise FileNotFoundError("Index not found. Run `python build_index.py` first.")
 
     index = faiss.read_index(INDEX_PATH)
 
@@ -60,6 +68,7 @@ def load_index():
 def embed_query(query: str) -> np.ndarray:
     """
     Embeds a single query string so it can be compared against the index.
+    Normalized the same way as the indexed chunks.
     """
-    embedding = model.encode([query])
+    embedding = get_model().encode([query], normalize_embeddings=True)
     return np.array(embedding).astype("float32")
